@@ -1,7 +1,7 @@
 #include "headers/spaceship.h"
 
 int main(){
-    AfficherVaisseau();
+    DisplayShip();
 
     return 0;
 }

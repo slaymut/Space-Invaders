@@ -1,29 +1,27 @@
 #include "../headers/spaceship.h"
 
-void AfficherVaisseau()
+void DisplayShip()
 {
-    char ch;
-    FILE *file = fopen("Textures/Monsters/monster1.txt", "r"); // read mode
-
-    //Get file size for malloc
-    fseek(file, 0, SEEK_END);
-    int size = ftell(file); 
-    fseek(file, 0, SEEK_SET);
-
-    char *vaisseau = malloc(sizeof(char)*size);
-
+    FILE *file = fopen("Textures/Player/spaceship.txt", "r"); // read mode
     if (file == NULL){
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
     }
 
+    fseek(file, 0, SEEK_END);
+    int file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    Spaceship ship = {malloc(sizeof(char)*file_size), 4};
+
     int i=0;
+    char ch;
     while((ch = fgetc(file)) != EOF){
-        vaisseau[i] = ch;
+        ship.model[i] = ch;
         i++;
     }
 
-   printf("%s\n", vaisseau);
+   printf("%s\n\nThe Spaceship has %d lives\n", ship.model, ship.lives);
 
    fclose(file);
 }
