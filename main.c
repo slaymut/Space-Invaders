@@ -7,14 +7,16 @@
 int main (int argc, char **argv)
 {
     struct winsize w;
-    while(1){
-        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
-        printf ("lines %d\n", w.ws_row);
-        printf ("columns %d\n", w.ws_col);
+    printf ("lines %d\n", w.ws_row);
+    printf ("columns %d\n", w.ws_col);
 
-        sleep(1);
+    GameField game = InitializeField(w.ws_col, w.ws_row);
+    for(int i = 0; i < game.height; i++){
+        printf("%s\n", game.field[i]);
     }
+    
     return 0;  // make sure your main returns int
 }
 
