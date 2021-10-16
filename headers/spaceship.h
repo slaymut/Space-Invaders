@@ -10,8 +10,10 @@
  * 
  */
 struct Spaceship{
-    char* model;
+    char** model;
     short lives;
+    int width, length;
+
 };
 typedef struct Spaceship Spaceship;
 

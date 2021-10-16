@@ -3,12 +3,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "spaceship.h"
 
 struct GameField{
-    char* field;
+    char** field;
 };
 typedef struct GameField GameField;
 
-void InitializeField();
+void InitializeField(int field_width, int field_length);
+Spaceship SetupSpaceship(char* filePath);
 
 #endif

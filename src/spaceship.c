@@ -11,7 +11,7 @@ void DisplayShip()
     fseek(file, 0, SEEK_END);
     int file_size = ftell(file);
     fseek(file, 0, SEEK_SET);
-
+    
     Spaceship ship = {malloc(sizeof(char)*file_size), 4};
 
     int i=0;
@@ -21,7 +21,7 @@ void DisplayShip()
         i++;
     }
 
-   printf("%s\n\nThe Spaceship has %d lives\n", ship.model, ship.lives);
+   printf("%s\n\nThe Spaceship has %d lives\n", ship.model[1], ship.lives);
 
    fclose(file);
 }
