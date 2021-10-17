@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "spaceship.h"
+#include "utils.h"
 
 struct GameField{
     char** field;
@@ -23,8 +24,7 @@ GameField InitializeField(int field_width, int field_length);
  * @brief Create SpaceShip structure
  * 
  * @param filePath Path to .txt file
- * @return Spaceship 
  */
-Spaceship SetupSpaceship(char* filePath);
+void SetupSpaceship(char* filePath);
 
 #endif

@@ -17,6 +17,8 @@ int main (int argc, char **argv)
         printf("%s\n", game.field[i]);
     }
     
+    SetupSpaceship("Textures/Player/spaceship.txt");
+
     return 0;  // make sure your main returns int
 }
 

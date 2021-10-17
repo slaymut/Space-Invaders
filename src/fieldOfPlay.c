@@ -25,19 +25,15 @@ GameField InitializeField(int field_width, int field_length){
 }
 
 
-Spaceship SetupSpaceship(char* filepath){
+void SetupSpaceship(char* filepath){
     FILE *file = fopen(filepath, "r"); // read mode
     if (file == NULL){
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
     }
 
-    fseek(file, 0, SEEK_END);
-    int file_size = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
     Spaceship ship;
-    
+    ship = InitSpaceship(filepath);
 
     int i=0, j=0;
     char ch;
@@ -52,11 +48,9 @@ Spaceship SetupSpaceship(char* filepath){
         }
     }
 
-    for(int meow = 0; meow < i; meow++){
-        printf("%s", ship.model[meow]);
+    for(int meow = 0; meow < i+1; meow++){
+        printf("%s\n", ship.model[meow]);
     }
 
     fclose(file);
-
-    return ship;
 }
