@@ -23,34 +23,3 @@ GameField InitializeField(int field_width, int field_length){
     GameField gField = {field, field_length, field_width};
     return gField;
 }
-
-
-void SetupSpaceship(char* filepath){
-    FILE *file = fopen(filepath, "r"); // read mode
-    if (file == NULL){
-        perror("Error while opening the file.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    Spaceship ship;
-    ship = InitSpaceship(filepath);
-
-    int i=0, j=0;
-    char ch;
-    while((ch = fgetc(file)) != EOF){
-        if(ch == '\n'){
-            j = 0;
-            i++;
-        }
-        else{
-            ship.model[i][j] = ch;
-            j++;
-        }
-    }
-
-    for(int meow = 0; meow < i+1; meow++){
-        printf("%s\n", ship.model[meow]);
-    }
-
-    fclose(file);
-}

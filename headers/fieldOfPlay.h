@@ -20,11 +20,5 @@ typedef struct GameField GameField;
  */
 GameField InitializeField(int field_width, int field_length);
 
-/**
- * @brief Create SpaceShip structure
- * 
- * @param filePath Path to .txt file
- */
-void SetupSpaceship(char* filePath);
 
 #endif

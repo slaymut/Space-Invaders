@@ -5,7 +5,12 @@
 #include <stdlib.h>
 #include "spaceship.h"
 
-Spaceship InitSpaceship(char* filepath);
+/**
+ * @brief Displays the spaceship's model
+ * 
+ * @param ship The spaceship to display
+ */
+void DisplayShip(Spaceship ship);
 
 
 #endif

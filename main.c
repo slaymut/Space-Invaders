@@ -1,4 +1,3 @@
-#include "headers/spaceship.h"
 #include "headers/fieldOfPlay.h"
 
 #include <sys/ioctl.h>
@@ -17,14 +16,8 @@ int main (int argc, char **argv)
         printf("%s\n", game.field[i]);
     }
     
-    SetupSpaceship("Textures/Player/spaceship.txt");
+    Spaceship ship = SetupSpaceship("Textures/Player/spaceship.txt");
+    DisplayShip(ship);
 
-    return 0;  // make sure your main returns int
+    return 0;
 }
-
-
-//int main(){
-    //Spaceship space = SetupSpaceship("Textures/Player/spaceship.txt");
-
-  //  return 0;
-//}

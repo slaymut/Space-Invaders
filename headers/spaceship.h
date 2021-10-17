@@ -18,9 +18,19 @@ struct Spaceship{
 typedef struct Spaceship Spaceship;
 
 /**
- * @brief Displays the spaceship's model
+ * @brief Initilize Spaceship, find spaceship dimensions and allocate enough memory
  * 
+ * @param filepath 
+ * @return The initialized spaceship
  */
-void DisplayShip();
+Spaceship InitSpaceship(char* filepath);
+
+/**
+ * @brief Create SpaceShip structure
+ * 
+ * @param filePath Path to .txt file
+ * @return The setup spaceship
+ */
+Spaceship SetupSpaceship(char* filePath);
 
 #endif
