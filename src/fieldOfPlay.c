@@ -1,7 +1,7 @@
 #include "../headers/fieldOfPlay.h"
 
 
-GameField InitializeField(int field_width, int field_length){
+GameField* InitializeField(int field_width, int field_length){
     char** field = (char**) malloc(field_length*sizeof(char *));
 
     for(int i = 0; i < field_length; i++)
@@ -20,6 +20,28 @@ GameField InitializeField(int field_width, int field_length){
         }
     }
 
-    GameField gField = {field, field_length, field_width};
+    GameField* gField = malloc(sizeof(GameField));
+    gField->field = field;
+    gField->height = field_length;
+    gField->width = field_width;
+
     return gField;
+}
+
+
+void InsertEntity(GameField* field, Spaceship space, int x, int y) {
+    if(x < 0 || y < 0){
+        return;
+    }
+    
+    if((y + space.height) >= field->height){
+        return;
+    }
+
+
+    for(int i = 0; i < space.height; i++) {
+        for(int j = 0; j < space.width; j++) {
+            field->field[y+i][x+j] = space.model[i][j];
+        }
+    }
 }
