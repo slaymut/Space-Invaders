@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall
+CFLAGS=-Wall -lncurses
 HEADERS=headers/
 SRC=src/
 RELEASE=release/src/

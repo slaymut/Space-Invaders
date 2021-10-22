@@ -13,7 +13,6 @@ struct Spaceship{
     char** model;
     short lives;
     int width, height;
-
 };
 typedef struct Spaceship Spaceship;
 

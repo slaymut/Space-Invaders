@@ -38,7 +38,6 @@ void InsertEntity(GameField* field, Spaceship space, int x, int y) {
         return;
     }
 
-
     for(int i = 0; i < space.height; i++) {
         for(int j = 0; j < space.width; j++) {
             field->field[y+i][x+j] = space.model[i][j];

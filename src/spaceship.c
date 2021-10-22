@@ -42,8 +42,7 @@ Spaceship SetupSpaceship(char* filepath){
         exit(EXIT_FAILURE);
     }
 
-    Spaceship ship;
-    ship = InitSpaceship(filepath);
+    Spaceship ship = InitSpaceship(filepath);
 
     int i=0, j=0;
     char ch;
