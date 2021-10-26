@@ -3,6 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <string.h>
+#include <termios.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include "spaceship.h"
 
 /**
@@ -12,5 +17,6 @@
  */
 void DisplayShip(Spaceship ship);
 
+char key_pressed();
 
 #endif
