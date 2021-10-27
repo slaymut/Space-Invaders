@@ -41,11 +41,10 @@ struct options {
 	
 void menu(struct options *settings); // list for user
 void gameover(int win); // win or lost?
-/*he main function handles user input, the game visuals, and checks for win/loss conditions */
 int main() {
     // struct for each type
 
-/* Cela permettra d'afficher l*/
+/* Cela permettra d'afficher le message "Victory" ou "Deafeat"*/
 void gameover(int win) {
 
    nodelay(stdscr, 0);
