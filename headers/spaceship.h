@@ -1,9 +1,7 @@
 #ifndef __SPACESHIP_H
 #define __SPACESHIP_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "pre_compiler.h"
 
 /**
  * @brief Structure representing the player's spaceship

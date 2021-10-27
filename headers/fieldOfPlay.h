@@ -1,8 +1,6 @@
 #ifndef __FIELD_OF_PLAY_H
 #define __FIELD_OF_PLAY_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "spaceship.h"
 #include "utils.h"
 

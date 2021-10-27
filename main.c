@@ -1,8 +1,6 @@
 #include "headers/fieldOfPlay.h"
-
-#include <sys/ioctl.h>
-#include <unistd.h>
-#include <ncurses.h>
+#include "headers/pre_compiler.h"
+#include "headers/monsters.h"
 
 // int main (int argc, char **argv)
 // {
@@ -45,23 +43,44 @@ int main (int argc, char **argv)
     int start_x = (w.ws_col/2) - ship.width;
     int start_y = (w.ws_row - w.ws_row/5);
 
+    Monster* monster = CreateMonsterSet(5);
+
     char ch;
     //InsertEntity(game, ship, start_x, start_y);
     while(1) {    
-         for(int i = 0; i < game->height; i++){
+        for(int i = 0; i < game->height; i++){
             printw("%s", game->field[i]);
         }
         for(int i = 0; i < ship.height; i++) {
             mvprintw(start_y+i, start_x, ship.model[i]);
         }
+        DisplayMonsters(monster);
         
         switch (ch = key_pressed()) {
             case 'd':
+                //clear();
+                for(int i = 0; i < ship.height; i++) {
+                    mvprintw(start_y+i, start_x, ship.model[i]);
+                }
                 start_x += 3;
+                //refresh();
                 break;
             case 'q':
+                //clear();
+                for(int i = 0; i < ship.height; i++) {
+                    mvprintw(start_y+i, start_x, ship.model[i]);
+                }
                 start_x -= 3;
+                //refresh();
                 break;
+            // case 'a':
+            //     while(start_y > 0){
+            //         for(int i = 0; i < ship.height; i++) {
+            //             mvprintw(start_y+i, start_x, ship.model[i]);
+            //         }
+                    
+            //         start_y -= 1;
+            //     }
         }
         
         usleep(50000);
