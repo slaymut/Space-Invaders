@@ -3,7 +3,8 @@
 
 #include "pre_compiler.h"
 
-#define NUMBER_OF_MONSTERS 15
+#define NUMBER_OF_MONSTERS 21
+#define NUMBER_OF_MROWS 3
 
 /**
  * @brief Structure of a Monster/Alien
@@ -14,6 +15,8 @@ struct Monster {
     char** model;
     int pos_x, pos_y;
     int height, width;
+
+    int print_cpt;
 
     struct Monster *next;
 };
@@ -40,10 +43,11 @@ void InsertMonster(Monster* monster, int start_y, int start_x);
 /**
  * @brief Create a Set of monsters with a given number
  * 
- * @param nbr_of_monsters Given number of monsters to create
+ * @param start_y Starting point on the Y axis
+ * @param start_x Starting point on the X axis
  * @return Monster* The set of monsters
  */
-Monster* CreateMonsterSet(int nbr_of_monsters);
+Monster* CreateMonsterSet(int start_y, int start_x);
 
 /**
  * @brief Display every monster models in the linked list
@@ -51,6 +55,6 @@ Monster* CreateMonsterSet(int nbr_of_monsters);
  * 
  * @param root Root monster of the linked list
  */
-void DisplayMonsters(Monster* root);
+void DisplayMonsters(Monster* root, int index);
 
 #endif

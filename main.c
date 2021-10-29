@@ -36,6 +36,7 @@ int main (int argc, char **argv)
     raw();
     noecho();
     cbreak();
+    curs_set(0);
     
     GameField* game = InitializeField(w.ws_col, w.ws_row);
     
@@ -43,44 +44,46 @@ int main (int argc, char **argv)
     int start_x = (w.ws_col/2) - ship.width;
     int start_y = (w.ws_row - w.ws_row/5);
 
-    Monster* monster = CreateMonsterSet(5);
+    Monster* monster = CreateMonsterSet(w.ws_row/8, w.ws_col/4);
 
     char ch;
-    //InsertEntity(game, ship, start_x, start_y);
-    while(1) {    
+    int y;
+    int count_monsters = 0;
+    int count_laser = 0;
+    int player_shoot = 0;
+    
+    while(1) {
         for(int i = 0; i < game->height; i++){
             printw("%s", game->field[i]);
         }
         for(int i = 0; i < ship.height; i++) {
             mvprintw(start_y+i, start_x, ship.model[i]);
         }
-        DisplayMonsters(monster);
+        DisplayMonsters(monster, count_monsters++);
         
         switch (ch = key_pressed()) {
             case 'd':
-                //clear();
                 for(int i = 0; i < ship.height; i++) {
                     mvprintw(start_y+i, start_x, ship.model[i]);
                 }
                 start_x += 3;
-                //refresh();
                 break;
             case 'q':
-                //clear();
                 for(int i = 0; i < ship.height; i++) {
                     mvprintw(start_y+i, start_x, ship.model[i]);
                 }
                 start_x -= 3;
-                //refresh();
                 break;
-            // case 'a':
-            //     while(start_y > 0){
-            //         for(int i = 0; i < ship.height; i++) {
-            //             mvprintw(start_y+i, start_x, ship.model[i]);
-            //         }
-                    
-            //         start_y -= 1;
-            //     }
+            case ' ':
+                y = 1;
+                
+                break;
+        }
+        count_laser++;
+        if(count_laser%LASER_BUFFER == 0){
+            mvprintw(start_y-y, start_x + ship.width/2, "|");
+            refresh();
+            y++;
         }
         
         usleep(50000);
