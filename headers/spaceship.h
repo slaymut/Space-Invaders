@@ -3,7 +3,7 @@
 
 #include "pre_compiler.h"
 
-#define LASER_BUFFER 1000000
+#define LASER_BUFFER 1
 
 /**
  * @brief Structure representing the player's spaceship
@@ -15,6 +15,17 @@ struct Spaceship{
     int width, height;
 };
 typedef struct Spaceship Spaceship;
+
+/**
+ * @brief Structure representing a Laser
+ * 
+ */
+struct Laser {
+    int laser_y;
+    int laser_x;
+    char beam;
+};
+typedef struct Laser Laser;
 
 /**
  * @brief Initilize Spaceship, find spaceship dimensions and allocate enough memory

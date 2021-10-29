@@ -2,31 +2,6 @@
 #include "headers/pre_compiler.h"
 #include "headers/monsters.h"
 
-// int main (int argc, char **argv)
-// {
-    
-    
-//     struct winsize w;
-//     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
-//     printf ("lines %d\n", w.ws_row);
-//     printf ("columns %d\n", w.ws_col);
-
-//     GameField* game = InitializeField(w.ws_col, w.ws_row);
-    
-//     Spaceship ship = SetupSpaceship("Textures/Player/spaceship.txt");
-//     int start_x = (w.ws_col/2) - ship.width;
-//     int start_y = (w.ws_row - w.ws_row/5);
-    
-//     InsertEntity(game, ship, start_x, start_y);
-
-//     for(int i = 0; i < game->height; i++){
-//         printf("%s\n", game->field[i]);
-//     }
-    
-//     return 0;
-// }
-
 int main (int argc, char **argv)
 {   
     struct winsize w;
@@ -41,6 +16,7 @@ int main (int argc, char **argv)
     GameField* game = InitializeField(w.ws_col, w.ws_row);
     
     Spaceship ship = SetupSpaceship("Textures/Player/spaceship.txt");
+    Laser laser = {0, 0, '|'};
     int start_x = (w.ws_col/2) - ship.width;
     int start_y = (w.ws_row - w.ws_row/5);
 
@@ -75,18 +51,25 @@ int main (int argc, char **argv)
                 start_x -= 3;
                 break;
             case ' ':
-                y = 1;
-                
+                if(!player_shoot){
+                    y = 1;
+                    laser.laser_x = start_x;
+                    laser.laser_y = start_y;
+                    player_shoot = 1;
+                }
                 break;
         }
         count_laser++;
-        if(count_laser%LASER_BUFFER == 0){
-            mvprintw(start_y-y, start_x + ship.width/2, "|");
-            refresh();
+        if(player_shoot == 1 && count_laser%LASER_BUFFER == 0){
+            mvprintw(laser.laser_y-y, laser.laser_x + ship.width/2, "%c", laser.beam);
             y++;
         }
+
+        if((start_y - y) == 0) {
+            player_shoot = 0;
+        }
         
-        usleep(50000);
+        usleep(40000);
 
         refresh();
         clear();

@@ -69,5 +69,5 @@ void DisplayShip(Spaceship ship) {
 }
 
 void AfficherLaser(int start_y, int start_x) {
-
+    //wprintw(start_y, start_x, "|");
 }
