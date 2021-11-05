@@ -43,9 +43,20 @@ void menu(struct options *settings); // list for user
 void gameover(int win); // win or lost?
 int main() {
     // struct for each type
+	
+	struct options settings;
+  //Affiche l'Ecran d'acceuil 
+   move(0,(COLS/2)-9);
+   addstr("--SPACE INVADERS--");
+   move (0,1);
+   addstr("SCORE: ");
+   move(0,COLS-19);
+   addstr("m = menu  q = quit");
+
 
 /* Cela permettra d'afficher le message "Victory" ou "Deafeat"*/
-void gameover(int win) {
+
+void gameover (int win) {
 
    nodelay(stdscr, 0);
    
@@ -70,4 +81,5 @@ void gameover(int win) {
       refresh();
       getch();
    }
+}
 }
