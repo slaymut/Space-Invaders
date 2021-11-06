@@ -41,7 +41,6 @@ Monster* InitMonster(int lives) {
     monster->lives = lives;
     monster->next = NULL;
     monster->print_cpt = 20;
-    monster->destroyed = 0;
 
     fclose(file);
     fclose(file_bis);
@@ -94,11 +93,10 @@ void DisplayMonsters(Monster* root, int index) {
     if(root == NULL)
         return;
     
-    if(root->destroyed == 0){
-        for (int i = 0; i < root->height; i++) {
-            mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
-        }
+    for (int i = 0; i < root->height; i++) {
+        mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
     }
+
     if((index%root->print_cpt) == 0){
         root->pos_x++;
     }
@@ -117,6 +115,7 @@ int isGettingHit(Monster* root, int laser_y, int laser_x) {
     }
     isGettingHit(root->next, laser_y, laser_x);
     
+
     /*Monster* tmp = root;
     int pos = 0;
 
