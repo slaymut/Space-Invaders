@@ -15,8 +15,9 @@ struct Monster {
     char** model;
     int pos_x, pos_y;
     int height, width;
-
     int print_cpt;
+
+    int list_position;
 
     struct Monster *next;
 };
@@ -38,16 +39,17 @@ Monster* InitMonster();
  * @param start_y Y starting coordinate
  * @param start_x X starting coordinate
  */
-void InsertMonster(Monster* monster, int start_y, int start_x);
+void InsertMonster(Monster* monster, int start_y, int start_x, int index);
 
 /**
  * @brief Create a Set of monsters with a given number
  * 
  * @param start_y Starting point on the Y axis
  * @param start_x Starting point on the X axis
+ * @param index Position in the linked list
  * @return Monster* The set of monsters
  */
-Monster* CreateMonsterSet(int start_y, int start_x);
+Monster* CreateMonsterSet(int start_y, int start_x, int index);
 
 /**
  * @brief Display every monster models in the linked list
@@ -56,5 +58,9 @@ Monster* CreateMonsterSet(int start_y, int start_x);
  * @param root Root monster of the linked list
  */
 void DisplayMonsters(Monster* root, int index);
+
+int isGettingHit(Monster* root, int laser_y, int laser_x);
+
+void DeleteMonster(Monster* root, int pos);
 
 #endif
