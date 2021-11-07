@@ -4,9 +4,13 @@
 
 int main (int argc, char **argv)
 {   
+    struct winsize w;
+    ioctl(STDERR_FILENO, TIOCGWINSZ, &w);
+
     initscr(); raw(); noecho(); cbreak(); curs_set(0);
-    
-    //GameField* game = InitializeField(COLS, LINES);
+    time_t t;
+
+    //srand(time(&t));
     
     Spaceship ship = SetupSpaceship("Textures/Player/spaceship.txt");
     Laser laser = {0, 0, '|'};
@@ -14,6 +18,7 @@ int main (int argc, char **argv)
     int start_y = (LINES - LINES/5);
 
     Monster* monster = CreateMonsterSet(LINES/8, COLS/4, 1);
+    Direction direction = RIGHT;
 
     char ch;
     int y;
@@ -21,14 +26,19 @@ int main (int argc, char **argv)
     int player_shoot = 0;
     
     while(1) {
-        // for(int i = 0; i < game->height; i++){
-        //     printw("%s", game->field[i]);
-        // }
         for(int i = 0; i < ship.height; i++) {
             mvprintw(start_y+i, start_x, ship.model[i]);
         }
-        DisplayMonsters(monster, iter_counter++);
+        DisplayMonsters(monster, iter_counter++, direction);
         
+        if(MaxX(monster, 0) == 70){ 
+            direction = LEFT;
+        }
+        if(MinX(monster, 50) == 5) {
+            direction = RIGHT;
+        }
+        
+
         switch (ch = key_pressed()) {
             case 'd':
                 for(int i = 0; i < ship.height; i++) {
@@ -55,9 +65,10 @@ int main (int argc, char **argv)
             player_shoot = 0;
 
         int pos = isGettingHit(monster, laser.laser_y, laser.laser_x);
-        if(pos != 0){
+        if(pos != 0 && player_shoot == 1){
             DeleteMonster(monster, pos);
             player_shoot = 0;
+            pos = 0;
         }
 
         if(player_shoot == 1 && iter_counter%LASER_BUFFER == 0){

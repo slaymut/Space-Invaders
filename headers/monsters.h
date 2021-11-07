@@ -8,7 +8,6 @@
 
 /**
  * @brief Structure of a Monster/Alien
- * 
  */
 struct Monster {
     int lives;
@@ -22,6 +21,16 @@ struct Monster {
     struct Monster *next;
 };
 typedef struct Monster Monster;
+
+/**
+ * @brief Direction to which the monsters move
+ */
+enum Direction {
+    RIGHT,
+    DOWN,
+    LEFT
+};
+typedef enum Direction Direction;
 
 /**
  * @brief Allocate enough memory, get the Monster model, initialize
@@ -51,16 +60,35 @@ void InsertMonster(Monster* monster, int start_y, int start_x, int index);
  */
 Monster* CreateMonsterSet(int start_y, int start_x, int index);
 
+int MaxX(Monster* monster, int colmax);
+int MinX(Monster* monster, int colmin);
+
 /**
- * @brief Display every monster models in the linked list
- * starting from root
+ * @brief Display every monster models in the linked list. Takes care
+ * of moving them aswell
  * 
  * @param root Root monster of the linked list
+ * @param buffer Buffer for moving the monsters
+ * @param direction Direction to move the monsters
  */
-void DisplayMonsters(Monster* root, int index);
+void DisplayMonsters(Monster* root, int buffer, Direction direction);
 
+/**
+ * @brief Detects if a monster is getting hit
+ * 
+ * @param root Linked list of monsters
+ * @param laser_y Y position of the laser
+ * @param laser_x X position of the laser
+ * @return int The monster's position in the linked list
+ */
 int isGettingHit(Monster* root, int laser_y, int laser_x);
 
+/**
+ * @brief Deletes a monster from the linked list
+ * 
+ * @param root Linked list of monsters
+ * @param pos Position of the monster to delete
+ */
 void DeleteMonster(Monster* root, int pos);
 
 #endif
