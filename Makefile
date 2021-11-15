@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -lncurses
+CFLAGS=$(ncursesw5-config --cflags --libs) -Wall -lncursesw
 HEADERS=headers/
 SRC=src/
 RELEASE=release/src/

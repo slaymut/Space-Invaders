@@ -62,12 +62,8 @@ Spaceship SetupSpaceship(char* filepath){
     return ship;
 }
 
-void DisplayShip(Spaceship ship) {
-    for(int i = 0; i < ship.height; i++){
-        printf("%s\n", ship.model[i]);
+void DisplayShip(Spaceship ship, int start_y, int start_x) {
+    for(int i = 0; i < ship.height; i++) {
+        mvprintw(start_y+i, start_x, ship.model[i]);
     }
-}
-
-void AfficherLaser(int start_y, int start_x) {
-    //wprintw(start_y, start_x, "|");
 }

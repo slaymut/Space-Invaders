@@ -60,7 +60,22 @@ void InsertMonster(Monster* monster, int start_y, int start_x, int index);
  */
 Monster* CreateMonsterSet(int start_y, int start_x, int index);
 
+/**
+ * @brief Get min X position in the linked list
+ * 
+ * @param monster List of monsters
+ * @param colmax Max X position
+ * @return int returns "colmax"
+ */
 int MaxX(Monster* monster, int colmax);
+
+/**
+ * @brief Get min X position in the linked list
+ * 
+ * @param monster List of monsters
+ * @param colmin Min X position
+ * @return int returns "colmin"
+ */
 int MinX(Monster* monster, int colmin);
 
 /**

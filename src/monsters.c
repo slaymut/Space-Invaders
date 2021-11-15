@@ -131,31 +131,39 @@ void DisplayMonsters(Monster* root, int buffer, Direction direction) {
             break;
         }
     }
-    for (int i = 0; i < root->height; i++) {
-        mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
+    if(root->lives > 0) {
+        for (int i = 0; i < root->height; i++) {
+            mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
+        }
     }
     DisplayMonsters(root->next, buffer, direction);
 }
 
 int MaxX(Monster* monster, int colmax) {
-    if(monster == NULL)
-        return;
+    Monster* temp = monster;
 
-    if(monster->pos_x > colmax)
-        colmax = monster->pos_x + monster->width;
+    while(temp != NULL) {
+        if(temp->pos_x + temp->width > colmax)
+            colmax = temp->pos_x + temp->width;
 
-    MaxX(monster->next, colmax);
+        temp = temp->next;
+    }
+
+    free(temp);
     return colmax;
 }
 
 int MinX(Monster* monster, int colmin) {
-    if(monster == NULL)
-        return;
+    Monster* temp = monster;
 
-    if(monster->pos_x < colmin)
-        colmin = monster->pos_x;
+    while(temp != NULL) {
+        if(temp->pos_x < colmin)
+            colmin = temp->pos_x;
 
-    MinX(monster->next, colmin);
+        temp = temp->next;
+    }
+
+    free(temp);
     return colmin;
 }
 
@@ -163,21 +171,27 @@ int MinX(Monster* monster, int colmin) {
 int isGettingHit(Monster* root, int laser_y, int laser_x) {
     if(root == NULL)
         return 0;
-    
-    if(laser_y >= root->pos_y && laser_y <= root->pos_y + root->height-1){
+
+    if(laser_y >= root->pos_y && laser_y-1 <= root->pos_y + root->height-1){
         if(laser_x >= root->pos_x && laser_x <= root->pos_x + root->width){
-            root->lives--;
-            return root->list_position;
+            if(root->lives > 0) {
+                root->lives--;
+                return 1;
+            }
         }
     }
-    isGettingHit(root->next, laser_y, laser_x);
+    return isGettingHit(root->next, laser_y, laser_x);
 }
 
+/*
 void DeleteMonster(Monster* root, int pos) {
     Monster* temp = root, *prev;
 
+    if(temp == NULL)
+        return;
+
     if(temp != NULL && temp->list_position == pos && temp->lives == 0) {
-        root = temp->next;
+        root = root->next;
         free(temp);
         return;
     }
@@ -187,12 +201,9 @@ void DeleteMonster(Monster* root, int pos) {
         temp = temp->next;
     }
     
-    if(temp == NULL)
-        return;
-    
     if(temp->lives == 0)
         prev->next = temp->next;
 
     free(temp);
 }
-
+*/

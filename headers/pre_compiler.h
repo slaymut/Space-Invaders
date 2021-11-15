@@ -11,5 +11,6 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <ncurses.h>
+#include <locale.h>
 
 #endif

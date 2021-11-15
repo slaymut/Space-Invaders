@@ -48,7 +48,7 @@ Spaceship SetupSpaceship(char* filePath);
  * 
  * @param ship The spaceship to display
  */
-void DisplayShip(Spaceship ship);
+void DisplayShip(Spaceship ship, int start_y, int start_x);
 
 void AfficherLaser(int start_y, int start_x);
 
