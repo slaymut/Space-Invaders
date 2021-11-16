@@ -3,6 +3,7 @@
 
 #include "pre_compiler.h"
 
+#define BASE_PRINT_CPT 2
 #define NUMBER_OF_MONSTERS 21
 #define NUMBER_OF_MROWS 3
 
@@ -79,14 +80,23 @@ int MaxX(Monster* monster, int colmax);
 int MinX(Monster* monster, int colmin);
 
 /**
+ * @brief Get max Y position in the linked list
+ * 
+ * @param monster List of monsters
+ * @param rowmax Max Y position
+ * @return int the Row position (Y coordinate on the screen) according to the furthest down monster
+ */
+int MaxY(Monster* monster, int rowmax);
+
+void MoveMonster(Monster* monster, int buffer, Direction direction);
+
+/**
  * @brief Display every monster models in the linked list. Takes care
  * of moving them aswell
  * 
  * @param root Root monster of the linked list
- * @param buffer Buffer for moving the monsters
- * @param direction Direction to move the monsters
  */
-void DisplayMonsters(Monster* root, int buffer, Direction direction);
+void DisplayMonsters(Monster* root);
 
 /**
  * @brief Detects if a monster is getting hit

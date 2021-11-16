@@ -26,13 +26,28 @@ int main (int argc, char **argv)
     
     while(1) {
         DisplayShip(ship, start_y, start_x);
-        DisplayMonsters(monster, iter_counter++, direction);
+        MoveMonster(monster, iter_counter++, direction);
+        DisplayMonsters(monster);
         
-        if(MaxX(monster, 0) == COLS - COLS/10)
+        if(MaxX(monster, 0) == COLS - COLS/15){
+            MoveMonster(monster, iter_counter++, DOWN);
             direction = LEFT;
-        if(MinX(monster, 50) == COLS/10)
+        }
+        if(MinX(monster, 50) == COLS/15){
+            MoveMonster(monster, iter_counter++, DOWN);
             direction = RIGHT;
+        }
 
+        /*
+        if(isGameOver(monster, start_y)){
+            refresh();
+            clear();
+
+            mvprintw(COLS/2, LINES/2, "YOU LOSE HAHAHA !");
+            break;
+        }
+        */
+       
         switch (ch = key_pressed()) {
             case 'd':
                 start_x += 3;

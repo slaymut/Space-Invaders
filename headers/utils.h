@@ -2,8 +2,10 @@
 #define __UTILS_H
 
 #include "pre_compiler.h"
-#include "spaceship.h"
+#include "monsters.h"
 
 char key_pressed();
+
+int isGameOver();
 
 #endif

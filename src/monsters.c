@@ -41,7 +41,7 @@ Monster* InitMonster(int lives) {
     monster->lives = lives;
     monster->next = NULL;
     
-    monster->print_cpt = 5;  //+ (rand()%2);
+    monster->print_cpt = BASE_PRINT_CPT;  //+ (rand()%2);
 
     fclose(file);
     fclose(file_bis);
@@ -90,53 +90,36 @@ Monster* CreateMonsterSet(int start_y, int start_x, int index) {
     return root;
 }
 
-/*
-void MoveLeft(Monster* monster) {
-    if(monster == NULL) return;
-    
-    monster->pos_x--;
-    MoveLeft(monster->next);
-}
-
-void MoveRight(Monster* monster) {
+void MoveMonster(Monster* monster, int buffer, Direction direction) {
     if(monster == NULL) return;
 
-    monster->pos_x++;
-    MoveLeft(monster->next);
-}
-
-void MoveDown(Monster* monster) {
-    if(monster == NULL) return;
-
-    monster->pos_y++;
-    MoveLeft(monster->next);
-}
-
-*/
-
-void DisplayMonsters(Monster* root, int buffer, Direction direction) {
-    if(root == NULL)
-        return;
-    
-    if((buffer%root->print_cpt) == 0){
+    if((buffer%monster->print_cpt) == 0){
         switch (direction) {
         case RIGHT:
-            root->pos_x++;
+            monster->pos_x++;
             break;
         case LEFT:
-            root->pos_x--;
+            monster->pos_x--;
             break;
         case DOWN:
-            root->pos_y++;    
+            monster->pos_y++;    
             break;
         }
     }
+
+    MoveMonster(monster->next, buffer, direction);
+}
+
+void DisplayMonsters(Monster* root) {
+    if(root == NULL)
+        return;
+    
     if(root->lives > 0) {
         for (int i = 0; i < root->height; i++) {
             mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
         }
     }
-    DisplayMonsters(root->next, buffer, direction);
+    DisplayMonsters(root->next);
 }
 
 int MaxX(Monster* monster, int colmax) {
@@ -167,6 +150,19 @@ int MinX(Monster* monster, int colmin) {
     return colmin;
 }
 
+int MaxY(Monster* monster, int rowmax) {
+    Monster* temp = monster;
+
+    while(temp != NULL) {
+        if(temp->pos_y > rowmax)
+            rowmax = temp->pos_y;
+
+        temp = temp->next;
+    }
+
+    free(temp);
+    return rowmax;
+}
 
 int isGettingHit(Monster* root, int laser_y, int laser_x) {
     if(root == NULL)
@@ -182,28 +178,3 @@ int isGettingHit(Monster* root, int laser_y, int laser_x) {
     }
     return isGettingHit(root->next, laser_y, laser_x);
 }
-
-/*
-void DeleteMonster(Monster* root, int pos) {
-    Monster* temp = root, *prev;
-
-    if(temp == NULL)
-        return;
-
-    if(temp != NULL && temp->list_position == pos && temp->lives == 0) {
-        root = root->next;
-        free(temp);
-        return;
-    }
-    
-    while(temp != NULL && temp->list_position != pos) {
-        prev = temp;
-        temp = temp->next;
-    }
-    
-    if(temp->lives == 0)
-        prev->next = temp->next;
-
-    free(temp);
-}
-*/

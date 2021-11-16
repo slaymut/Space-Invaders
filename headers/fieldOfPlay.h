@@ -31,5 +31,7 @@ GameField* InitializeField(int field_width, int field_length);
 
 void InsertEntity(GameField* field, Spaceship space, int x, int y);
 
+//void StartGame();
+
 
 #endif
