@@ -3,9 +3,8 @@
 
 #include "pre_compiler.h"
 #include "monsters.h"
+#include "spaceship.h"
 
 char key_pressed();
-
-int isGameOver();
 
 #endif

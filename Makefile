@@ -7,10 +7,13 @@ EXEC=release/spaceinvaders
 
 all: $(EXEC)
 
-$(EXEC): release/main.o $(RELEASE)spaceship.o $(RELEASE)fieldOfPlay.o $(RELEASE)utils.o $(RELEASE)monsters.o
+$(EXEC): release/main.o $(RELEASE)game.o $(RELEASE)spaceship.o $(RELEASE)fieldOfPlay.o $(RELEASE)utils.o $(RELEASE)monsters.o
 	$(CC) -o $(EXEC) $^ $(CFLAGS)
 
 release/main.o: main.c $(HEADERS)*.h
+	$(CC) -I $(HEADERS) -o $@ -c $< $(CFLAGS)
+
+$(RELEASE)game.o: $(SRC)game.c $(HEADERS)game.h
 	$(CC) -I $(HEADERS) -o $@ -c $< $(CFLAGS)
 
 $(RELEASE)spaceship.o: $(SRC)spaceship.c $(HEADERS)spaceship.h
