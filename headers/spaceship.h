@@ -1,24 +1,64 @@
 #ifndef __SPACESHIP_H
 #define __SPACESHIP_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "pre_compiler.h"
+
+#define LASER_BUFFER 1
 
 /**
  * @brief Structure representing the player's spaceship
  * 
  */
 struct Spaceship{
-    char* model;
+    char** model;
     short lives;
+    int width, height;
+    int pos_x, pos_y;
 };
 typedef struct Spaceship Spaceship;
 
 /**
- * @brief Displays the spaceship's model
+ * @brief Structure representing a Laser
  * 
  */
-void DisplayShip();
+struct Laser {
+    int laser_y;
+    int laser_x;
+    char beam;
+};
+typedef struct Laser Laser;
+
+/**
+ * @brief Initilize Spaceship, find spaceship dimensions and allocate enough memory
+ * 
+ * @param filepath 
+ * @return The initialized spaceship
+ */
+Spaceship InitSpaceship(char* filepath);
+
+/**
+ * @brief Create SpaceShip structure
+ * 
+ * @param filePath Path to .txt file
+ * @return The setup spaceship
+ */
+Spaceship SetupSpaceship(char* filePath);
+
+/**
+ * @brief Displays the spaceship's model
+ * 
+ * @param ship The spaceship to display
+ */
+void DisplayShip(Spaceship ship, int start_y, int start_x);
+
+/**
+ * @brief If the Spaceship is hit by enemy laser !
+ * 
+ * @param laser_y Laser position on Y axis
+ * @param laser_x Laser position on X axis
+ * @param ship Player's spaceship
+ * @return int 1 if true, 0 if false
+ */
+int isShipGetHit(int laser_y, int laser_x, Spaceship ship);
 
 #endif
