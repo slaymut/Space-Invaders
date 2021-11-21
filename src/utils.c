@@ -24,7 +24,7 @@ char key_pressed()
 }
 
 int isGameOver(Monster* monster, int ship_y) {
-    if(MaxY(monster, 100) >= ship_y - 3){
+    if(MaxY(monster, 0) >= ship_y - 3){
         return 1;
     }
     return 0;

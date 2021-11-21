@@ -13,6 +13,7 @@ struct Spaceship{
     char** model;
     short lives;
     int width, height;
+    int pos_x, pos_y;
 };
 typedef struct Spaceship Spaceship;
 
@@ -50,6 +51,14 @@ Spaceship SetupSpaceship(char* filePath);
  */
 void DisplayShip(Spaceship ship, int start_y, int start_x);
 
-void AfficherLaser(int start_y, int start_x);
+/**
+ * @brief If the Spaceship is hit by enemy laser !
+ * 
+ * @param laser_y Laser position on Y axis
+ * @param laser_x Laser position on X axis
+ * @param ship Player's spaceship
+ * @return int 1 if true, 0 if false
+ */
+int isShipGetHit(int laser_y, int laser_x, Spaceship ship);
 
 #endif

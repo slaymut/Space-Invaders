@@ -3,9 +3,10 @@
 
 #include "pre_compiler.h"
 
-#define BASE_PRINT_CPT 2
-#define NUMBER_OF_MONSTERS 21
+#define BASE_PRINT_CPT 10
+#define NUMBER_OF_MONSTERS_PER_ROW 7
 #define NUMBER_OF_MROWS 3
+#define MONSTER_LASER_BUFFER 1
 
 /**
  * @brief Structure of a Monster/Alien
@@ -24,6 +25,17 @@ struct Monster {
 typedef struct Monster Monster;
 
 /**
+ * @brief Position Holder for monsters that can shoot
+ * 
+ */
+struct PositionHolder {
+    int positions_X[NUMBER_OF_MONSTERS_PER_ROW];
+    int positions_Y[NUMBER_OF_MONSTERS_PER_ROW];
+    int shooting[NUMBER_OF_MONSTERS_PER_ROW];
+};
+typedef struct PositionHolder PositionHolder;
+
+/**
  * @brief Direction to which the monsters move
  */
 enum Direction {
@@ -39,7 +51,7 @@ typedef enum Direction Direction;
  * 
  * @return Monster* Initialized monster
  */
-Monster* InitMonster();
+Monster* InitMonster(int lives, int which_monster);
 
 /**
  * @brief Insert a monster inside the linked link "monster".
@@ -88,6 +100,13 @@ int MinX(Monster* monster, int colmin);
  */
 int MaxY(Monster* monster, int rowmax);
 
+/**
+ * @brief Moves monster in a direction
+ * 
+ * @param monster Linked list of monsters
+ * @param buffer Movement buffer to know when to actually move it
+ * @param direction The direction where to move the monsters
+ */
 void MoveMonster(Monster* monster, int buffer, Direction direction);
 
 /**
@@ -109,11 +128,11 @@ void DisplayMonsters(Monster* root);
 int isGettingHit(Monster* root, int laser_y, int laser_x);
 
 /**
- * @brief Deletes a monster from the linked list
+ * @brief Selects positions of every monster that can shoot
  * 
- * @param root Linked list of monsters
- * @param pos Position of the monster to delete
+ * @param monsters Linked list of monsters
+ * @return PositionHolder Positions
  */
-void DeleteMonster(Monster* root, int pos);
+PositionHolder ShootingMonsters(Monster* monsters);
 
 #endif

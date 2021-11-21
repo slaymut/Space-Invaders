@@ -1,8 +1,14 @@
 #include "../headers/monsters.h"
 
-Monster* InitMonster(int lives) {
-    FILE* file = fopen("Textures/Monsters/monster1.txt", "r");
-    FILE* file_bis = fopen("Textures/Monsters/monster1.txt", "r");
+Monster* InitMonster(int lives, int which_monster) {
+    const char suffix[3][15] = {"monster1.txt", "monster2.txt", "monster3.txt"};
+    
+    char filename[30] = "Textures/Monsters/";
+    strcat(filename, suffix[which_monster]);
+
+    FILE* file = fopen(filename, "r");
+    FILE* file_bis = fopen(filename, "r");
+
     if (file == NULL || file_bis == NULL){
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
@@ -22,9 +28,10 @@ Monster* InitMonster(int lives) {
             monster->width = tmp;
     }
 
-    monster->model = (char**) malloc(monster->height*sizeof(char *));
+    monster->model = (char**) calloc(monster->height, sizeof(char *));
     for(int i = 0; i < monster->height; i++)
-        monster->model[i] = (char *) malloc(monster->width*sizeof(char));
+        monster->model[i] = (char *) calloc(monster->width, sizeof(char));
+
 
     int i = 0, j = 0;
     while((ch = fgetc(file_bis)) != EOF){
@@ -54,10 +61,9 @@ void InsertMonster(Monster* monster, int start_y, int start_x, int index) {
         return;
     
     if(monster->next == NULL){
-        Monster* newMonster = InitMonster(1);
+        Monster* newMonster = InitMonster(1, index);
         newMonster->pos_y = start_y;
         newMonster->pos_x = start_x;
-        newMonster->list_position = index;
         monster->next = newMonster;
         return;
     }
@@ -67,24 +73,23 @@ void InsertMonster(Monster* monster, int start_y, int start_x, int index) {
 }
 
 Monster* CreateMonsterSet(int start_y, int start_x, int index) {
-    Monster* root = InitMonster(1);
+    Monster* root = InitMonster(1, index);
     root->pos_y = start_y;
     root->pos_x = start_x;
-    root->list_position = index;
     int spacer_y = 0;
     int spacer_x = 0;
 
     for(int j = 1; j <= NUMBER_OF_MROWS; j++) {
-        for(int i = 0; i < NUMBER_OF_MONSTERS/NUMBER_OF_MROWS; i++){
-            if(j == 1 && i == NUMBER_OF_MONSTERS/NUMBER_OF_MROWS - 1)
+        for(int i = 0; i < NUMBER_OF_MONSTERS_PER_ROW; i++){
+            if(j == 1 && i == NUMBER_OF_MONSTERS_PER_ROW - 1)
                 break;
             spacer_x += 10;
-            index++;
             InsertMonster(root, (root->pos_y + spacer_y),
                                 (root->pos_x + spacer_x), index);
         }
+        index++;
         spacer_x = -10;
-        spacer_y += 2 + root->height;
+        spacer_y += 1 + root->height;
     }
 
     return root;
@@ -126,7 +131,7 @@ int MaxX(Monster* monster, int colmax) {
     Monster* temp = monster;
 
     while(temp != NULL) {
-        if(temp->pos_x + temp->width > colmax)
+        if(temp->pos_x + temp->width > colmax && temp->lives > 0)
             colmax = temp->pos_x + temp->width;
 
         temp = temp->next;
@@ -140,7 +145,7 @@ int MinX(Monster* monster, int colmin) {
     Monster* temp = monster;
 
     while(temp != NULL) {
-        if(temp->pos_x < colmin)
+        if(temp->pos_x < colmin && temp->lives > 0)
             colmin = temp->pos_x;
 
         temp = temp->next;
@@ -154,7 +159,7 @@ int MaxY(Monster* monster, int rowmax) {
     Monster* temp = monster;
 
     while(temp != NULL) {
-        if(temp->pos_y > rowmax)
+        if(temp->pos_y > rowmax && temp->lives > 0)
             rowmax = temp->pos_y;
 
         temp = temp->next;
@@ -177,4 +182,23 @@ int isGettingHit(Monster* root, int laser_y, int laser_x) {
         }
     }
     return isGettingHit(root->next, laser_y, laser_x);
+}
+
+PositionHolder ShootingMonsters(Monster* monsters) {
+    PositionHolder pos_holder;
+
+    Monster* temp = monsters;
+    int row = 0;
+    while(temp != NULL) {
+        row++;
+        if(temp->lives){
+            pos_holder.positions_X[row%NUMBER_OF_MONSTERS_PER_ROW] = temp->pos_x;
+            pos_holder.positions_Y[row%NUMBER_OF_MONSTERS_PER_ROW] = temp->pos_y;
+            pos_holder.shooting[row%NUMBER_OF_MONSTERS_PER_ROW] = 0;
+        }
+        temp = temp->next;
+    }
+
+    free(temp);
+    return pos_holder;
 }

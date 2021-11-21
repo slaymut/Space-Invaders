@@ -58,7 +58,6 @@ Spaceship SetupSpaceship(char* filepath){
     }
 
     fclose(file);
-
     return ship;
 }
 
@@ -66,4 +65,13 @@ void DisplayShip(Spaceship ship, int start_y, int start_x) {
     for(int i = 0; i < ship.height; i++) {
         mvprintw(start_y+i, start_x, ship.model[i]);
     }
+}
+
+int isShipGetHit(int laser_y, int laser_x, Spaceship ship) {
+    if(laser_y >= ship.pos_y && laser_y-1 <= ship.pos_y + ship.height-1){
+        if(laser_x >= ship.pos_x && laser_x <= ship.pos_x + ship.width){          
+            return 1;
+        }
+    }
+    return 0;
 }
