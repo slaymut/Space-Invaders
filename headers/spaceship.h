@@ -2,6 +2,7 @@
 #define __SPACESHIP_H
 
 #include "pre_compiler.h"
+#include "monsters.h"
 
 #define LASER_BUFFER 1
 
@@ -14,6 +15,9 @@ struct Spaceship{
     short lives;
     int width, height;
     int pos_x, pos_y;
+    int lazr_x, lazr_y;
+
+    int player_shoot;
 };
 typedef struct Spaceship Spaceship;
 
@@ -22,9 +26,8 @@ typedef struct Spaceship Spaceship;
  * 
  */
 struct Laser {
-    int laser_y;
-    int laser_x;
-    char beam;
+    int y;
+    int x;
 };
 typedef struct Laser Laser;
 
@@ -60,5 +63,15 @@ void DisplayShip(Spaceship ship, int start_y, int start_x);
  * @return int 1 if true, 0 if false
  */
 int isShipGetHit(int laser_y, int laser_x, Spaceship ship);
+
+/**
+ * @brief Takes care of the spaceship's laser hitbox
+ * 
+ * @param monster Monsters to hit
+ * @param ship The spaceship
+ * @return Spaceship with new values. This return is used so we 
+ * don't have to use a pointer on "ship"
+ */
+Spaceship laserHitboxChecker(Monster* monster, Spaceship ship);
 
 #endif

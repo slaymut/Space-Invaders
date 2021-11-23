@@ -26,9 +26,13 @@ Spaceship InitSpaceship(char* filepath){
     ship.model = (char**) malloc(row*sizeof(char *));
     for(int i = 0; i < row; i++)
         ship.model[i] = (char *) malloc(col*sizeof(char));
+
     ship.height = row;
     ship.width = col;
     ship.lives = 3;
+    ship.pos_x = (COLS/2) - col/2; ship.pos_y = (LINES - LINES/5);
+    ship.player_shoot = 0;
+    ship.lazr_x = 0; ship.lazr_y = 0;
 
     fclose(file);
     
@@ -74,4 +78,18 @@ int isShipGetHit(int laser_y, int laser_x, Spaceship ship) {
         }
     }
     return 0;
+}
+
+Spaceship laserHitboxChecker(Monster* monster, Spaceship ship) {
+    if(ship.lazr_y == 0) {
+        ship.player_shoot = 0;
+    }
+
+    if((isGettingHit(monster, ship.lazr_y, ship.lazr_x) && ship.player_shoot == 1)){
+        ship.player_shoot = 0;
+        ship.lazr_x = 0;
+        ship.lazr_y = 0;
+    }
+
+    return ship;
 }
