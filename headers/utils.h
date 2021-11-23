@@ -2,8 +2,8 @@
 #define __UTILS_H
 
 #include "pre_compiler.h"
-#include "monsters.h"
-#include "spaceship.h"
+
+Difficulte GLOBAL_GAME_DIFFICULTY;
 
 char key_pressed();
 

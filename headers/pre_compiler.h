@@ -13,4 +13,11 @@
 #include <ncurses.h>
 #include <locale.h>
 
+enum Difficulte {
+    FACILE,
+    DIFFICILE,
+    PROGRESSIF
+};
+typedef enum Difficulte Difficulte;
+
 #endif

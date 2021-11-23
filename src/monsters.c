@@ -44,11 +44,11 @@ Monster* InitMonster(int lives, int which_monster) {
             j++;
         }
     }
-
+    
     monster->lives = lives;
     monster->next = NULL;
     
-    monster->print_cpt = BASE_PRINT_CPT;  //+ (rand()%2);
+    monster->print_cpt = BASE_PRINT_CPT;
 
     fclose(file);
     fclose(file_bis);
@@ -56,28 +56,34 @@ Monster* InitMonster(int lives, int which_monster) {
     return monster;
 }
 
-void InsertMonster(Monster* monster, int start_y, int start_x, int index) {
+void InsertMonster(Monster* monster, int start_y, int start_x, int type, int lives) {
     if(monster == NULL)
         return;
     
     if(monster->next == NULL){
-        Monster* newMonster = InitMonster(1, index);
+        Monster* newMonster = InitMonster(lives, type);
         newMonster->pos_y = start_y;
         newMonster->pos_x = start_x;
         monster->next = newMonster;
         return;
     }
     if(monster->next)
-        InsertMonster(monster->next, start_y, start_x, index);
+        InsertMonster(monster->next, start_y, start_x, type, lives);
     
 }
 
-Monster* CreateMonsterSet(int start_y, int start_x, int index) {
-    Monster* root = InitMonster(1, index);
+Monster* CreateMonsterSet(int start_y, int start_x, int type) {
+    int lives = 1;
+    if(GLOBAL_GAME_DIFFICULTY == DIFFICILE) {
+        lives = 3;
+    }
+    
+    Monster* root = InitMonster(1, type);
     root->pos_y = start_y;
     root->pos_x = start_x;
     int spacer_y = 0;
     int spacer_x = 0;
+    
 
     for(int j = 1; j <= NUMBER_OF_MROWS; j++) {
         for(int i = 0; i < NUMBER_OF_MONSTERS_PER_ROW; i++){
@@ -85,9 +91,10 @@ Monster* CreateMonsterSet(int start_y, int start_x, int index) {
                 break;
             spacer_x += 10;
             InsertMonster(root, (root->pos_y + spacer_y),
-                                (root->pos_x + spacer_x), index);
+                                (root->pos_x + spacer_x), type, lives);
         }
-        index++;
+        type++;
+        lives--;
         spacer_x = -10;
         spacer_y += 1 + root->height;
     }
@@ -194,7 +201,6 @@ PositionHolder ShootingMonsters(Monster* monsters) {
         if(temp->lives){
             pos_holder.positions_X[row%NUMBER_OF_MONSTERS_PER_ROW] = temp->pos_x;
             pos_holder.positions_Y[row%NUMBER_OF_MONSTERS_PER_ROW] = temp->pos_y;
-            pos_holder.shooting[row%NUMBER_OF_MONSTERS_PER_ROW] = 0;
         }
         temp = temp->next;
     }

@@ -2,6 +2,7 @@
 #define __MONSTERS_H
 
 #include "pre_compiler.h"
+#include "utils.h"
 
 #define BASE_PRINT_CPT 10
 #define NUMBER_OF_MONSTERS_PER_ROW 7
@@ -31,7 +32,6 @@ typedef struct Monster Monster;
 struct PositionHolder {
     int positions_X[NUMBER_OF_MONSTERS_PER_ROW];
     int positions_Y[NUMBER_OF_MONSTERS_PER_ROW];
-    int shooting[NUMBER_OF_MONSTERS_PER_ROW];
 };
 typedef struct PositionHolder PositionHolder;
 
@@ -61,17 +61,17 @@ Monster* InitMonster(int lives, int which_monster);
  * @param start_y Y starting coordinate
  * @param start_x X starting coordinate
  */
-void InsertMonster(Monster* monster, int start_y, int start_x, int index);
+void InsertMonster(Monster* monster, int start_y, int start_x, int index, int lives);
 
 /**
  * @brief Create a Set of monsters with a given number
  * 
  * @param start_y Starting point on the Y axis
  * @param start_x Starting point on the X axis
- * @param index Position in the linked list
+ * @param type Type of monster
  * @return Monster* The set of monsters
  */
-Monster* CreateMonsterSet(int start_y, int start_x, int index);
+Monster* CreateMonsterSet(int start_y, int start_x, int type);
 
 /**
  * @brief Get min X position in the linked list

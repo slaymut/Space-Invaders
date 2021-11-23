@@ -4,11 +4,12 @@ void PlayGame() {
     
     time_t t;
     srand(time(&t));
-    
+    Direction direction = RIGHT;
+    GLOBAL_GAME_DIFFICULTY = DIFFICILE;
+
     Spaceship ship = SetupSpaceship("Textures/Player/spaceship.txt");
     Monster* monster = CreateMonsterSet(LINES/8, COLS/4, 0);
-    Direction direction = RIGHT;
-
+    
     PositionHolder pos_holder = ShootingMonsters(monster);
     int shooting_monster = 0;
     int monster_shoot = 0;
