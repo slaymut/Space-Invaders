@@ -10,26 +10,25 @@ int main (int argc, char **argv)
     
     time_t t;
     srand(time(&t));
-    Difficulty difficulty = DIFFICILE;
+    Difficulty difficulty = FACILE;
 
     int loop_times = 0;
-    int game_is_over = 0;
     int BOSS_APPEARANCE = 0;
+    int boss_fight = 0;
 
-    switch (difficulty)
-    {
-    case FACILE:
-        loop_times = 1;
-        BOSS_APPEARANCE = 3;
-        break;
-    case DIFFICILE:
-        loop_times = 2;
-        BOSS_APPEARANCE = 2;
-        break;
-    case PROGRESSIVE:
-        loop_times = -1;
-        BOSS_APPEARANCE = rand()%3 + 1;
-        break;
+    switch (difficulty) {
+        case FACILE:
+            loop_times = 2;
+            BOSS_APPEARANCE = 3;
+            break;
+        case DIFFICILE:
+            loop_times = 3;
+            BOSS_APPEARANCE = 2;
+            break;
+        case PROGRESSIVE:
+            loop_times = -1;
+            BOSS_APPEARANCE = rand()%3 + 1;
+            break;
     }
     
     Spaceship ship = SetupSpaceship("Textures/Player/spaceship.txt");
@@ -50,7 +49,17 @@ int main (int argc, char **argv)
     int player_shoot = 0;
     int monster_laser_x = 0, monster_laser_y = 0;
     
-    while(!game_is_over) {
+    while(1) {
+        if(loop_times == 0) {
+            clear();
+            mvprintw(LINES/2, COLS/2, "YOU WIN! BRAVOOOOO!");
+
+            getch();
+            endwin();
+
+            return 0;
+        }
+
         DisplayShip(ship, ship.pos_y, ship.pos_x);
         MoveMonster(monster, iter_counter++, direction);
         DisplayMonsters(monster);
@@ -130,8 +139,13 @@ int main (int argc, char **argv)
                 ship.waves_killed++;
                 if(ship.waves_killed%BOSS_APPEARANCE == 0){
                     monster = CreateBossInstance(LINES/8, COLS/2, difficulty, ship.waves_killed);
+                    boss_fight = 1;
                 }
                 else{
+                    if(boss_fight){
+                        boss_fight = 0;
+                        loop_times--;
+                    }
                     monster = CreateMonsterSet(LINES/8, COLS/4, 0, difficulty, ship.waves_killed);
                 }
             }
