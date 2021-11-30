@@ -10,13 +10,34 @@ int main (int argc, char **argv)
     
     time_t t;
     srand(time(&t));
+    Difficulty difficulty = DIFFICILE;
+
+    int loop_times = 0;
+    int game_is_over = 0;
+    int BOSS_APPEARANCE = 0;
+
+    switch (difficulty)
+    {
+    case FACILE:
+        loop_times = 1;
+        BOSS_APPEARANCE = 3;
+        break;
+    case DIFFICILE:
+        loop_times = 2;
+        BOSS_APPEARANCE = 2;
+        break;
+    case PROGRESSIVE:
+        loop_times = -1;
+        BOSS_APPEARANCE = rand()%3 + 1;
+        break;
+    }
     
     Spaceship ship = SetupSpaceship("Textures/Player/spaceship.txt");
-    Laser laser = {0, 0, '⚡'};
+    Laser laser = {0, 0};
     ship.pos_x = (COLS/2) - ship.width/2;
     ship.pos_y = (LINES - LINES/5);
 
-    Monster* monster = CreateMonsterSet(LINES/8, COLS/4, 0);
+    Monster* monster = CreateMonsterSet(LINES/8, COLS/4, 0, difficulty, ship.waves_killed);
     Direction direction = RIGHT;
 
     PositionHolder pos_holder = ShootingMonsters(monster);
@@ -29,17 +50,18 @@ int main (int argc, char **argv)
     int player_shoot = 0;
     int monster_laser_x = 0, monster_laser_y = 0;
     
-    while(1) {
+    while(!game_is_over) {
         DisplayShip(ship, ship.pos_y, ship.pos_x);
         MoveMonster(monster, iter_counter++, direction);
         DisplayMonsters(monster);
 
         mvprintw(1, 1, "LIVES: %d", ship.lives);
+        mvprintw(3, 1, "WAVES KILLED: %d", ship.waves_killed);
 
         if(iter_counter%shooting_rate == 0 && monster_shoot == 0) {
             monster_shoot = 1;
             shooting_rate = rand()%10 + 50;
-            shooting_monster = rand()%(NUMBER_OF_MONSTERS_PER_ROW);
+            shooting_monster = rand()%(MONSTERS_PER_ROW);
             
             pos_holder = ShootingMonsters(monster);
             monster_laser_x = pos_holder.positions_X[shooting_monster];
@@ -73,11 +95,11 @@ int main (int argc, char **argv)
             monster_laser_y = 0;
         }
         
-        if(MaxX(monster, 0) == COLS - COLS/15){
+        if(MaxX(monster) == COLS - COLS/15){
             MoveMonster(monster, iter_counter, DOWN);
             direction = LEFT;
         }
-        if(MinX(monster, 50) == COLS/15){
+        if(MinX(monster) == COLS/15){
             MoveMonster(monster, iter_counter, DOWN);
             direction = RIGHT;
         }
@@ -104,6 +126,15 @@ int main (int argc, char **argv)
         }
 
         if((isGettingHit(monster, laser.laser_y, laser.laser_x) && player_shoot == 1)){
+            if(isEveryMonsterDead(monster, 0)) {
+                ship.waves_killed++;
+                if(ship.waves_killed%BOSS_APPEARANCE == 0){
+                    monster = CreateBossInstance(LINES/8, COLS/2, difficulty, ship.waves_killed);
+                }
+                else{
+                    monster = CreateMonsterSet(LINES/8, COLS/4, 0, difficulty, ship.waves_killed);
+                }
+            }
             player_shoot = 0;
             laser.laser_x = 0;
             laser.laser_y = 0;
@@ -114,11 +145,13 @@ int main (int argc, char **argv)
             mvprintw(laser.laser_y, laser.laser_x, "⚡");
         }
         
-        usleep(50000);
+        usleep(40000);
 
         refresh();
         clear();
     }
+
+    freeList(monster);
     getch();
     endwin();
     

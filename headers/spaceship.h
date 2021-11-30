@@ -14,6 +14,7 @@ struct Spaceship{
     short lives;
     int width, height;
     int pos_x, pos_y;
+    int waves_killed;
 };
 typedef struct Spaceship Spaceship;
 
@@ -24,7 +25,6 @@ typedef struct Spaceship Spaceship;
 struct Laser {
     int laser_y;
     int laser_x;
-    char beam;
 };
 typedef struct Laser Laser;
 

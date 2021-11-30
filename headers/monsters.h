@@ -4,9 +4,9 @@
 #include "pre_compiler.h"
 
 #define BASE_PRINT_CPT 10
-#define NUMBER_OF_MONSTERS_PER_ROW 7
-#define NUMBER_OF_MROWS 3
-#define MONSTER_LASER_BUFFER 1
+#define MONSTERS_PER_ROW 1
+#define MONSTER_ROWS 2
+#define MONSTER_LASER_BUFFER 2
 
 /**
  * @brief Structure of a Monster/Alien
@@ -29,9 +29,8 @@ typedef struct Monster Monster;
  * 
  */
 struct PositionHolder {
-    int positions_X[NUMBER_OF_MONSTERS_PER_ROW];
-    int positions_Y[NUMBER_OF_MONSTERS_PER_ROW];
-    int shooting[NUMBER_OF_MONSTERS_PER_ROW];
+    int positions_X[MONSTERS_PER_ROW];
+    int positions_Y[MONSTERS_PER_ROW];
 };
 typedef struct PositionHolder PositionHolder;
 
@@ -44,6 +43,13 @@ enum Direction {
     LEFT
 };
 typedef enum Direction Direction;
+
+enum Difficulty {
+    FACILE,
+    DIFFICILE,
+    PROGRESSIVE
+};
+typedef enum Difficulty Difficulty;
 
 /**
  * @brief Allocate enough memory, get the Monster model, initialize
@@ -61,7 +67,7 @@ Monster* InitMonster(int lives, int which_monster);
  * @param start_y Y starting coordinate
  * @param start_x X starting coordinate
  */
-void InsertMonster(Monster* monster, int start_y, int start_x, int index);
+void InsertMonster(Monster* monster, int start_y, int start_x, int index, int lives);
 
 /**
  * @brief Create a Set of monsters with a given number
@@ -69,36 +75,33 @@ void InsertMonster(Monster* monster, int start_y, int start_x, int index);
  * @param start_y Starting point on the Y axis
  * @param start_x Starting point on the X axis
  * @param index Position in the linked list
- * @return Monster* The set of monsters
+ * @return The set of monsters
  */
-Monster* CreateMonsterSet(int start_y, int start_x, int index);
+Monster* CreateMonsterSet(int start_y, int start_x, int index, Difficulty diff, int waves_killed);
 
 /**
  * @brief Get min X position in the linked list
  * 
  * @param monster List of monsters
- * @param colmax Max X position
- * @return int returns "colmax"
+ * @return returns "colmax"
  */
-int MaxX(Monster* monster, int colmax);
+int MaxX(Monster* monster);
 
 /**
  * @brief Get min X position in the linked list
  * 
  * @param monster List of monsters
- * @param colmin Min X position
  * @return int returns "colmin"
  */
-int MinX(Monster* monster, int colmin);
+int MinX(Monster* monster);
 
 /**
  * @brief Get max Y position in the linked list
  * 
  * @param monster List of monsters
- * @param rowmax Max Y position
  * @return int the Row position (Y coordinate on the screen) according to the furthest down monster
  */
-int MaxY(Monster* monster, int rowmax);
+int MaxY(Monster* monster);
 
 /**
  * @brief Moves monster in a direction
@@ -128,11 +131,39 @@ void DisplayMonsters(Monster* root);
 int isGettingHit(Monster* root, int laser_y, int laser_x);
 
 /**
+ * @brief Checks if every monster is dead
+ * 
+ * @param root 
+ * @return int 
+ */
+int isEveryMonsterDead(Monster* root, int check);
+
+/**
  * @brief Selects positions of every monster that can shoot
  * 
  * @param monsters Linked list of monsters
  * @return PositionHolder Positions
  */
 PositionHolder ShootingMonsters(Monster* monsters);
+
+/**
+ * @brief 
+ * 
+ * @param monster 
+ */
+void freeList(Monster* monster);
+
+/**
+ * @brief Create a Boss Instance
+ * 
+ * @param start_y 
+ * @param start_x 
+ * @param diff 
+ * @param waves_killed 
+ * @return Monster* 
+ */
+Monster* CreateBossInstance(int start_y, int start_x, 
+                          Difficulty diff,
+                          int waves_killed);
 
 #endif
