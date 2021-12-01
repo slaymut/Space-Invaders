@@ -15,18 +15,9 @@ struct Spaceship{
     int width, height;
     int pos_x, pos_y;
     int waves_killed;
+    int laser_x, laser_y;
 };
 typedef struct Spaceship Spaceship;
-
-/**
- * @brief Structure representing a Laser
- * 
- */
-struct Laser {
-    int laser_y;
-    int laser_x;
-};
-typedef struct Laser Laser;
 
 /**
  * @brief Initilize Spaceship, find spaceship dimensions and allocate enough memory

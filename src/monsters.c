@@ -47,8 +47,8 @@ Monster* InitMonster(int lives, int which_monster) {
 
     monster->lives = lives;
     monster->next = NULL;
-    
-    monster->print_cpt = BASE_PRINT_CPT;
+    monster->print_cpt = 10;
+    monster->score_gain = lives*10;
 
     fclose(file);
     fclose(file_bis);
@@ -198,6 +198,8 @@ int isGettingHit(Monster* root, int laser_y, int laser_x) {
         if(laser_x >= root->pos_x && laser_x <= root->pos_x + root->width){
             if(root->lives > 0) {
                 root->lives--;
+                if(root->lives == 0)
+                    return root->score_gain;
                 return 1;
             }
         }

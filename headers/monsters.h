@@ -3,10 +3,9 @@
 
 #include "pre_compiler.h"
 
-#define BASE_PRINT_CPT 10
 #define MONSTERS_PER_ROW 1
 #define MONSTER_ROWS 2
-#define MONSTER_LASER_BUFFER 2
+#define MONSTER_LASER_BUFFER 1
 
 /**
  * @brief Structure of a Monster/Alien
@@ -17,8 +16,7 @@ struct Monster {
     int pos_x, pos_y;
     int height, width;
     int print_cpt;
-
-    int list_position;
+    int score_gain;
 
     struct Monster *next;
 };

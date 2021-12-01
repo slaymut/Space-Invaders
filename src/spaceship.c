@@ -30,6 +30,8 @@ Spaceship InitSpaceship(char* filepath){
     ship.width = col;
     ship.lives = 3;
     ship.waves_killed = 0;
+    ship.laser_x = 0;
+    ship.laser_y = 0;
 
     fclose(file);
     
