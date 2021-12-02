@@ -7,7 +7,7 @@ int main (int argc, char **argv)
     setlocale(LC_ALL, "");
 
     initscr(); raw(); noecho(); cbreak(); curs_set(0);
-    start_color();
+    //start_color();
     //scrollok(stdscr, false);
 
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
