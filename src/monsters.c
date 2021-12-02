@@ -13,6 +13,7 @@ Monster* InitMonster(int lives, int which_monster, int waves_killed) {
 
     FILE* file = fopen(filename, "r");
     FILE* file2 = fopen(filename2, "r");
+
     FILE* file_bis = fopen(filename, "r");
 
     if (file == NULL || file_bis == NULL || file2 == NULL){

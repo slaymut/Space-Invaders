@@ -8,7 +8,6 @@ int main (int argc, char **argv)
 
     initscr(); raw(); noecho(); cbreak(); curs_set(0);
     //start_color();
-    //scrollok(stdscr, false);
 
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_BLACK);
@@ -17,6 +16,8 @@ int main (int argc, char **argv)
     // init_pair(4, COLOR_WHITE, COLOR_BLACK);
     // wbkgd(stdscr, COLOR_PAIR(4));
     
+    int x[50];
+    int y[50];
 
     time_t t;
     srand(time(&t));
@@ -26,8 +27,6 @@ int main (int argc, char **argv)
     config->lives[0] = "🧡";
     config->lives[1] = "💛";
     config->lives[2] = "💚";
-    
-    int x[30], y[30];
 
     switch (difficulty) {
         case FACILE:
@@ -67,16 +66,18 @@ int main (int argc, char **argv)
 
             return 0;
         }
-        // if(iter_counter%30 == 0) {
-        //     for(int i = 0; i < 30; i++) {
-        //         x[i] = rand()%COLS +3;
-        //         y[i] = rand()%LINES +3;
-        //     }
-        // }
 
-        // for(int i = 0; i < 30; i++) {
-        //     mvprintw(x[i], y[i], "%c", '*');
-        // }
+
+        if(config->iter_counter%20 == 0) {
+            for(int i = 0; i < 50; i++) {
+                x[i] = rand()%COLS +3;
+                y[i] = rand()%LINES +3;
+            }
+        }
+        
+        for(int i = 0; i < 50; i++) {
+            mvprintw(y[i], x[i], "%c", '*');
+        }
 
         DisplayShip(ship, ship.pos_y, ship.pos_x);
         MoveMonster(monster, config->iter_counter++, direction);
@@ -185,7 +186,7 @@ int main (int argc, char **argv)
             mvprintw(ship.laser_y, ship.laser_x, "⚡");
         }
         
-        usleep(40000);
+        usleep(50000);
 
         refresh();
         clear();
