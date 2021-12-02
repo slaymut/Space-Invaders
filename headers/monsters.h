@@ -17,6 +17,7 @@ struct Monster {
     int height, width;
     int print_cpt;
     int score_gain;
+    int type_of_monster;
 
     struct Monster *next;
 };

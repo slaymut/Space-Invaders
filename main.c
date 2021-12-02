@@ -7,10 +7,16 @@ int main (int argc, char **argv)
     setlocale(LC_ALL, "");
 
     initscr(); raw(); noecho(); cbreak(); curs_set(0);
+    start_color();
+
+    init_pair(3, COLOR_BLUE, COLOR_BLACK);
+    init_pair(2, COLOR_RED, COLOR_BLACK);
+    init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    
 
     time_t t;
     srand(time(&t));
-    Difficulty difficulty = FACILE;
+    Difficulty difficulty = DIFFICILE;
     GameConfig config = {0, 0, 0, 0};
     config.lives[0] = "🧡";
     config.lives[1] = "💛";
@@ -85,8 +91,8 @@ int main (int argc, char **argv)
             shooting_monster = rand()%(MONSTERS_PER_ROW);
             
             pos_holder = ShootingMonsters(monster);
-            monster_laser_x = pos_holder.positions_X[shooting_monster];
-            monster_laser_y = pos_holder.positions_Y[shooting_monster];
+            monster_laser_x = pos_holder.positions_X[shooting_monster]+monster->width/2;
+            monster_laser_y = pos_holder.positions_Y[shooting_monster]+monster->height;
         }
 
         if(monster_shoot && iter_counter%MONSTER_LASER_BUFFER == 0) {

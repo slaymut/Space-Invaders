@@ -49,6 +49,7 @@ Monster* InitMonster(int lives, int which_monster) {
     monster->next = NULL;
     monster->print_cpt = 10;
     monster->score_gain = lives*10;
+    monster->type_of_monster = which_monster+1;
 
     fclose(file);
     fclose(file_bis);
@@ -136,11 +137,13 @@ void MoveMonster(Monster* monster, int buffer, Direction direction) {
 void DisplayMonsters(Monster* root) {
     if(root == NULL)
         return;
-    
+
     if(root->lives > 0) {
+        attron(COLOR_PAIR(root->lives));
         for (int i = 0; i < root->height; i++) {
             mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
         }
+        attroff(COLOR_PAIR(root->lives));
     }
     DisplayMonsters(root->next);
 }
