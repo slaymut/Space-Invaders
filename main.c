@@ -8,6 +8,7 @@ int main (int argc, char **argv)
 
     initscr(); raw(); noecho(); cbreak(); curs_set(0);
     start_color();
+    //scrollok(stdscr, false);
 
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_BLACK);
@@ -79,8 +80,12 @@ int main (int argc, char **argv)
 
         DisplayShip(ship, ship.pos_y, ship.pos_x);
         MoveMonster(monster, config->iter_counter++, direction);
+        
+        if(config->iter_counter%monster->print_cpt == 0) {
+            config->model++;
+        }
 
-        DisplayMonsters(monster);
+        DisplayMonsters(monster, config->model%2);
 
         mvprintw(1, 1, "LIVES: %s %s %s", config->lives[0], config->lives[1], config->lives[2]);
         mvprintw(1, COLS - 10, "SCORE: %d", config->score);
@@ -180,7 +185,7 @@ int main (int argc, char **argv)
             mvprintw(ship.laser_y, ship.laser_x, "⚡");
         }
         
-        usleep(50000);
+        usleep(40000);
 
         refresh();
         clear();

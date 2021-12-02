@@ -11,6 +11,7 @@ struct GameConfig {
     int shooting_monster;
     int monster_shoot;
     int iter_counter;
+    int model;
     char* lives[2];
 };
 typedef struct GameConfig GameConfig;

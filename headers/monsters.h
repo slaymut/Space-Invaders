@@ -13,6 +13,7 @@
 struct Monster {
     int lives;
     char** model;
+    char** model2;
     int pos_x, pos_y;
     int height, width;
     int print_cpt;
@@ -117,7 +118,7 @@ void MoveMonster(Monster* monster, int buffer, Direction direction);
  * 
  * @param root Root monster of the linked list
  */
-void DisplayMonsters(Monster* root);
+void DisplayMonsters(Monster* root, int model_number);
 
 /**
  * @brief Detects if a monster is getting hit

@@ -1,15 +1,21 @@
 #include "../headers/monsters.h"
 
 Monster* InitMonster(int lives, int which_monster, int waves_killed) {
-    const char suffix[4][15] = {"monster1.txt", "monster2.txt", "monster3.txt", "boss.txt"};
+    const char suffix_1[4][20] = {"monster1_1.txt", "monster2_1.txt", "monster3_1.txt", "boss_1.txt"};
+    const char suffix_2[4][20] = {"monster1_2.txt", "monster2_2.txt", "monster3_2.txt", "boss_2.txt"};
     
-    char filename[30] = "Textures/Monsters/";
-    strcat(filename, suffix[which_monster]);
+    char filename[40] = "Textures/Monsters/";
+    strcat(filename, suffix_1[which_monster]);
+
+    char filename2[40] = "Textures/Monsters/";
+    strcat(filename2, suffix_2[which_monster]);
+
 
     FILE* file = fopen(filename, "r");
+    FILE* file2 = fopen(filename2, "r");
     FILE* file_bis = fopen(filename, "r");
 
-    if (file == NULL || file_bis == NULL){
+    if (file == NULL || file_bis == NULL || file2 == NULL){
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
     }
@@ -32,7 +38,6 @@ Monster* InitMonster(int lives, int which_monster, int waves_killed) {
     for(int i = 0; i < monster->height; i++)
         monster->model[i] = (char *) calloc(monster->width, sizeof(char));
 
-
     int i = 0, j = 0;
     while((ch = fgetc(file_bis)) != EOF){
         if(ch == '\n'){
@@ -45,14 +50,32 @@ Monster* InitMonster(int lives, int which_monster, int waves_killed) {
         }
     }
 
+    monster->model2 = (char**) calloc(monster->height, sizeof(char *));
+    for(int i = 0; i < monster->height; i++)
+        monster->model2[i] = (char *) calloc(monster->width, sizeof(char));
+
+    i = 0, j = 0;
+    while((ch = fgetc(file2)) != EOF){
+        if(ch == '\n'){
+            j = 0;
+            i++;
+        }
+        else{
+            monster->model2[i][j] = ch;
+            j++;
+        }
+    }
+
     monster->lives = lives;
     monster->next = NULL;
     monster->print_cpt = 20;
+    
     monster->score_gain = lives*10;
     monster->type_of_monster = which_monster+1;
 
     fclose(file);
     fclose(file_bis);
+    fclose(file2);
 
     return monster;
 }
@@ -140,18 +163,25 @@ void MoveMonster(Monster* monster, int buffer, Direction direction) {
     MoveMonster(monster->next, buffer, direction);
 }
 
-void DisplayMonsters(Monster* root) {
+void DisplayMonsters(Monster* root, int model_number) {
     if(root == NULL)
         return;
 
     if(root->lives > 0) {
         attron(COLOR_PAIR(root->lives));
-        for (int i = 0; i < root->height; i++) {
-            mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
+        if(model_number == 0){
+            for (int i = 0; i < root->height; i++) {
+                mvprintw(root->pos_y+i, root->pos_x, "%s", root->model[i]);
+            }
+        }
+        else {
+            for (int i = 0; i < root->height; i++) {
+                mvprintw(root->pos_y+i, root->pos_x, "%s", root->model2[i]);
+            }
         }
         attroff(COLOR_PAIR(root->lives));
     }
-    DisplayMonsters(root->next);
+    DisplayMonsters(root->next, model_number);
 }
 
 int MaxX(Monster* monster) {
@@ -256,9 +286,10 @@ void freeList(Monster* monster) {
     }
 }
 
-Monster* CreateBossInstance(int start_y, int start_x, 
-                          Difficulty diff,
-                          int waves_killed) {
+Monster* CreateBossInstance(int start_y,
+                            int start_x, 
+                            Difficulty diff,
+                            int waves_killed) {
     int lives = 4;
 
     if(diff == DIFFICILE) {
