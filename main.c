@@ -12,30 +12,34 @@ int main (int argc, char **argv)
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_BLACK);
     init_pair(1, COLOR_GREEN, COLOR_BLACK);
+
+    // init_pair(4, COLOR_WHITE, COLOR_BLACK);
+    // wbkgd(stdscr, COLOR_PAIR(4));
     
 
     time_t t;
     srand(time(&t));
     Difficulty difficulty = DIFFICILE;
-    GameConfig config = {0, 0, 0, 0};
-    config.lives[0] = "🧡";
-    config.lives[1] = "💛";
-    config.lives[2] = "💚";
+    GameConfig* config = malloc(sizeof(GameConfig));
+    config->iter_counter = 1;
+    config->lives[0] = "🧡";
+    config->lives[1] = "💛";
+    config->lives[2] = "💚";
     
     int x[30], y[30];
 
     switch (difficulty) {
         case FACILE:
-            config.loop_times = 2;
-            config.BOSS_APPEARANCE = 3;
+            config->loop_times = 2;
+            config->BOSS_APPEARANCE = 3;
             break;
         case DIFFICILE:
-            config.loop_times = 3;
-            config.BOSS_APPEARANCE = 2;
+            config->loop_times = 3;
+            config->BOSS_APPEARANCE = 2;
             break;
         case PROGRESSIVE:
-            config.loop_times = -1;
-            config.BOSS_APPEARANCE = rand()%3 + 1;
+            config->loop_times = -1;
+            config->BOSS_APPEARANCE = rand()%3 + 1;
             break;
     }
     
@@ -47,17 +51,13 @@ int main (int argc, char **argv)
     Direction direction = RIGHT;
 
     PositionHolder pos_holder = ShootingMonsters(monster);
-    int shooting_monster = 0;
-    int monster_shoot = 0;
-    int shooting_rate = rand()%10 + 50;
-
-    int iter_counter = 1;
+    
     int player_shoot = 0;
     int monster_laser_x = 0, monster_laser_y = 0;
     
     
     while(1) {
-        if(config.loop_times == 0) {
+        if(config->loop_times == 0) {
             clear();
             mvprintw(LINES/2, COLS/2, "YOU WIN! BRAVOOOOO!");
 
@@ -78,31 +78,30 @@ int main (int argc, char **argv)
         // }
 
         DisplayShip(ship, ship.pos_y, ship.pos_x);
-        MoveMonster(monster, iter_counter++, direction);
+        MoveMonster(monster, config->iter_counter++, direction);
 
         DisplayMonsters(monster);
 
-        mvprintw(1, 1, "LIVES: %s %s %s", config.lives[0], config.lives[1], config.lives[2]);
-        mvprintw(1, COLS - 10, "SCORE: %d", config.score);
+        mvprintw(1, 1, "LIVES: %s %s %s", config->lives[0], config->lives[1], config->lives[2]);
+        mvprintw(1, COLS - 10, "SCORE: %d", config->score);
 
-        if(iter_counter%shooting_rate == 0 && monster_shoot == 0) {
-            monster_shoot = 1;
-            shooting_rate = rand()%10 + 50;
-            shooting_monster = rand()%(MONSTERS_PER_ROW);
+        if(config->monster_shoot == 0) {
+            config->monster_shoot = 1;
+            config->shooting_monster = rand()%(MONSTERS_PER_ROW);
             
             pos_holder = ShootingMonsters(monster);
-            monster_laser_x = pos_holder.positions_X[shooting_monster]+monster->width/2;
-            monster_laser_y = pos_holder.positions_Y[shooting_monster]+monster->height;
+            monster_laser_x = pos_holder.positions_X[config->shooting_monster]+monster->width/2;
+            monster_laser_y = pos_holder.positions_Y[config->shooting_monster]+monster->height;
         }
 
-        if(monster_shoot && iter_counter%MONSTER_LASER_BUFFER == 0) {
+        if(config->monster_shoot && config->iter_counter%MONSTER_LASER_BUFFER == 0) {
             mvprintw(++monster_laser_y,
                      monster_laser_x, "🔥");
         }
 
         if(isShipGetHit(monster_laser_y, monster_laser_x, ship)){
             ship.lives--;
-            config.lives[ship.lives] = " ";
+            config->lives[ship.lives] = " ";
             if(ship.lives == 0){
                 clear();
                 mvprintw(LINES/2, COLS/2, "YOU LOST. DO BETTER NEXT TIME !");
@@ -113,22 +112,22 @@ int main (int argc, char **argv)
                 return 0;
             }
             
-            monster_shoot = 0;
+            config->monster_shoot = 0;
             monster_laser_x = 0;
             monster_laser_y = 0;
         }
         if(monster_laser_y == LINES) {
-            monster_shoot = 0;
+            config->monster_shoot = 0;
             monster_laser_x = 0;
             monster_laser_y = 0;
         }
         
         if(MaxX(monster) == COLS - COLS/15){
-            MoveMonster(monster, iter_counter, DOWN);
+            MoveMonster(monster, config->iter_counter, DOWN);
             direction = LEFT;
         }
         if(MinX(monster) == COLS/15){
-            MoveMonster(monster, iter_counter, DOWN);
+            MoveMonster(monster, config->iter_counter, DOWN);
             direction = RIGHT;
         }
 
@@ -156,32 +155,32 @@ int main (int argc, char **argv)
         if((temp_score = isGettingHit(monster, ship.laser_y, ship.laser_x)) && player_shoot == 1){
             if(isEveryMonsterDead(monster, 0)) {
                 ship.waves_killed++;
-                if(ship.waves_killed%config.BOSS_APPEARANCE == 0){
+                if(ship.waves_killed%config->BOSS_APPEARANCE == 0){
                     monster = CreateBossInstance(LINES/8, COLS/2, difficulty, ship.waves_killed);
-                    config.boss_fight = 1;
+                    config->boss_fight = 1;
                 }
                 else{
-                    if(config.boss_fight){
-                        config.boss_fight = 0;
-                        config.loop_times--;
+                    if(config->boss_fight){
+                        config->boss_fight = 0;
+                        config->loop_times--;
                     }
                     monster = CreateMonsterSet(LINES/8, COLS/4, 0, difficulty, ship.waves_killed);
                 }
             }
             if(temp_score > 1) {
-                config.score += temp_score;
+                config->score += temp_score;
             }
             player_shoot = 0;
             ship.laser_x = 0;
             ship.laser_y = 0;
         }
         
-        if(player_shoot == 1 && iter_counter%LASER_BUFFER == 0){
+        if(player_shoot == 1 && config->iter_counter%LASER_BUFFER == 0){
             ship.laser_y -= 1;
             mvprintw(ship.laser_y, ship.laser_x, "⚡");
         }
         
-        usleep(40000);
+        usleep(50000);
 
         refresh();
         clear();

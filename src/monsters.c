@@ -1,6 +1,6 @@
 #include "../headers/monsters.h"
 
-Monster* InitMonster(int lives, int which_monster) {
+Monster* InitMonster(int lives, int which_monster, int waves_killed) {
     const char suffix[4][15] = {"monster1.txt", "monster2.txt", "monster3.txt", "boss.txt"};
     
     char filename[30] = "Textures/Monsters/";
@@ -47,7 +47,7 @@ Monster* InitMonster(int lives, int which_monster) {
 
     monster->lives = lives;
     monster->next = NULL;
-    monster->print_cpt = 10;
+    monster->print_cpt = 20;
     monster->score_gain = lives*10;
     monster->type_of_monster = which_monster+1;
 
@@ -57,19 +57,25 @@ Monster* InitMonster(int lives, int which_monster) {
     return monster;
 }
 
-void InsertMonster(Monster* monster, int start_y, int start_x, int index, int lives) {
+void InsertMonster(Monster* monster, 
+                   int start_y, 
+                   int start_x, 
+                   int index, 
+                   int lives, 
+                   int waves_killed) {
+
     if(monster == NULL)
         return;
     
     if(monster->next == NULL){
-        Monster* newMonster = InitMonster(lives, index);
+        Monster* newMonster = InitMonster(lives, index, waves_killed);
         newMonster->pos_y = start_y;
         newMonster->pos_x = start_x;
         monster->next = newMonster;
         return;
     }
     if(monster->next)
-        InsertMonster(monster->next, start_y, start_x, index, lives);
+        InsertMonster(monster->next, start_y, start_x, index, lives, waves_killed);
     
 }
 
@@ -85,7 +91,7 @@ Monster* CreateMonsterSet(int start_y, int start_x,
         lives = waves_killed*2;
     }
 
-    Monster* root = InitMonster(lives, index);
+    Monster* root = InitMonster(lives, index, waves_killed);
     root->pos_y = start_y;
     root->pos_x = start_x;
     int spacer_y = 0;
@@ -97,7 +103,7 @@ Monster* CreateMonsterSet(int start_y, int start_x,
                 break;
             spacer_x += 10;
             InsertMonster(root, (root->pos_y + spacer_y),
-                                (root->pos_x + spacer_x), index, lives);
+                                (root->pos_x + spacer_x), index, lives, waves_killed);
         }
         index++;
 
@@ -262,7 +268,7 @@ Monster* CreateBossInstance(int start_y, int start_x,
         lives = waves_killed*2;
     }
 
-    Monster* root = InitMonster(lives, 3);
+    Monster* root = InitMonster(lives, 3, waves_killed);
     root->pos_y = start_y;
     root->pos_x = start_x;
 

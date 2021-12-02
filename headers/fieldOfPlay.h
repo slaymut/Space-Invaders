@@ -8,8 +8,13 @@ struct GameConfig {
     int BOSS_APPEARANCE;
     int boss_fight;
     int score;
+    int shooting_monster;
+    int monster_shoot;
+    int iter_counter;
     char* lives[2];
 };
 typedef struct GameConfig GameConfig;
+
+GameConfig InitConfig();
 
 #endif
