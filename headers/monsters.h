@@ -44,6 +44,10 @@ enum Direction {
 };
 typedef enum Direction Direction;
 
+/**
+ * @brief Difficulty of the game
+ * 
+ */
 enum Difficulty {
     FACILE,
     DIFFICILE,
@@ -55,17 +59,26 @@ typedef enum Difficulty Difficulty;
  * @brief Allocate enough memory, get the Monster model, initialize
  * basic datafields
  * 
- * @return Monster* Initialized monster
+ * @param lives Number of lives
+ * @param which_monster The type of the monster
+ * @param waves_killed Number of enemy waves killed by the player
+ * @param diff The difficulty of the game
+ * 
+ * @return Initialized monster
  */
 Monster* InitMonster(int lives, int which_monster, int waves_killed, Difficulty diff);
 
 /**
  * @brief Insert a monster inside the linked link "monster".
- * Inserted at the next available place.
+ * Inserted at the last available place.
  * 
- * @param monster root monster
+ * @param monster Linked list of monsters
  * @param start_y Y starting coordinate
  * @param start_x X starting coordinate
+ * @param index Type of monster
+ * @param lives Number of lives 
+ * @param waves_killed Number of monster waves killed by the player
+ * @param diff The difficulty of the game
  */
 void InsertMonster(Monster* monster, int start_y, int start_x, int index, int lives, int waves_killed, Difficulty diff);
 
@@ -74,7 +87,10 @@ void InsertMonster(Monster* monster, int start_y, int start_x, int index, int li
  * 
  * @param start_y Starting point on the Y axis
  * @param start_x Starting point on the X axis
- * @param index Position in the linked list
+ * @param index Type of monster
+ * @param diff Difficulty of the game
+ * @param waves_killed Number of monster waves killed by the player
+ * 
  * @return The set of monsters
  */
 Monster* CreateMonsterSet(int start_y, int start_x, int index, Difficulty diff, int waves_killed);
@@ -91,7 +107,7 @@ int MaxX(Monster* monster);
  * @brief Get min X position in the linked list
  * 
  * @param monster List of monsters
- * @return int returns "colmin"
+ * @return returns "colmin"
  */
 int MinX(Monster* monster);
 
@@ -99,7 +115,7 @@ int MinX(Monster* monster);
  * @brief Get max Y position in the linked list
  * 
  * @param monster List of monsters
- * @return int the Row position (Y coordinate on the screen) according to the furthest down monster
+ * @return the Row position (Y coordinate on the screen) according to the furthest down monster
  */
 int MaxY(Monster* monster);
 
@@ -117,6 +133,7 @@ void MoveMonster(Monster* monster, int buffer, Direction direction);
  * of moving them aswell
  * 
  * @param root Root monster of the linked list
+ * @param model_number The monster's model number
  */
 void DisplayMonsters(Monster* root, int model_number);
 
@@ -126,6 +143,7 @@ void DisplayMonsters(Monster* root, int model_number);
  * @param root Linked list of monsters
  * @param laser_y Y position of the laser
  * @param laser_x X position of the laser
+ * 
  * @return int The monster's position in the linked list
  */
 int isGettingHit(Monster* root, int laser_y, int laser_x);
@@ -133,8 +151,10 @@ int isGettingHit(Monster* root, int laser_y, int laser_x);
 /**
  * @brief Checks if every monster is dead
  * 
- * @param root 
- * @return int 
+ * @param root Linked list of monsters
+ * @param check 
+ * 
+ * @return returns 1 if every monster is dead, 0 if not
  */
 int isEveryMonsterDead(Monster* root, int check);
 
@@ -142,7 +162,8 @@ int isEveryMonsterDead(Monster* root, int check);
  * @brief Selects positions of every monster that can shoot
  * 
  * @param monsters Linked list of monsters
- * @return PositionHolder Positions
+ * 
+ * @return Positions
  */
 PositionHolder ShootingMonsters(Monster* monsters);
 
@@ -156,11 +177,12 @@ void freeList(Monster* monster);
 /**
  * @brief Create a Boss Instance
  * 
- * @param start_y 
- * @param start_x 
- * @param diff 
- * @param waves_killed 
- * @return Monster* 
+ * @param start_y Start Y position
+ * @param start_x Start X position
+ * @param diff Difficulty of the game
+ * @param waves_killed Number of monster waves killed by the player
+ * 
+ * @return returns an instance of a BOSS
  */
 Monster* CreateBossInstance(int start_y, int start_x, 
                           Difficulty diff,

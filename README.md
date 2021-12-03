@@ -32,6 +32,9 @@ make
 ## HOW TO CONTROL THE SPACESHIP
 
 There are three commands to control the spaceship !
+
 Q: Moving to the left
+
 D: Moving to the right
+
 Spacebar: Shoot !

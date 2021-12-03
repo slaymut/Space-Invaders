@@ -22,7 +22,7 @@ typedef struct Spaceship Spaceship;
 /**
  * @brief Initilize Spaceship, find spaceship dimensions and allocate enough memory
  * 
- * @param filepath 
+ * @param filepath The filepath
  * @return The initialized spaceship
  */
 Spaceship InitSpaceship(char* filepath);
@@ -39,6 +39,8 @@ Spaceship SetupSpaceship(char* filePath);
  * @brief Displays the spaceship's model
  * 
  * @param ship The spaceship to display
+ * @param start_y Starting Y position
+ * @param start_x Starting X position
  */
 void DisplayShip(Spaceship ship, int start_y, int start_x);
 

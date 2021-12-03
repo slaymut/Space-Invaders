@@ -3,6 +3,10 @@
 
 #include "pre_compiler.h"
 
+/**
+ * @brief Struct containing all the game configurations
+ * 
+ */
 struct GameConfig {
     int loop_times;
     int BOSS_APPEARANCE;
@@ -15,7 +19,5 @@ struct GameConfig {
     char* lives[2];
 };
 typedef struct GameConfig GameConfig;
-
-GameConfig InitConfig();
 
 #endif
