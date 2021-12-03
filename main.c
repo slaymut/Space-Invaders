@@ -16,8 +16,7 @@ int main (int argc, char **argv)
     // init_pair(4, COLOR_WHITE, COLOR_BLACK);
     // wbkgd(stdscr, COLOR_PAIR(4));
     
-    int x[50];
-    int y[50];
+
 
     time_t t;
     srand(time(&t));
@@ -59,25 +58,37 @@ int main (int argc, char **argv)
     while(1) {
         if(config->loop_times == 0) {
             clear();
-            mvprintw(LINES/2, COLS/2, "YOU WIN! BRAVOOOOO!");
 
+            int x[200];
+            int y[200];
+            for(int i = 0; i < 200; i++) {
+                x[i] = rand()%COLS +3;
+                y[i] = rand()%LINES +3;
+            }
+            for(int i = 0; i < 200; i++) {
+                mvprintw(y[i], x[i], "%c", '*');
+            }
+
+            mvprintw(LINES/2, COLS/2, "YOU WIN! BRAVOOOOO!");
+            
+            
+            
             getch();
             endwin();
 
             return 0;
         }
 
-
-        if(config->iter_counter%20 == 0) {
-            for(int i = 0; i < 50; i++) {
-                x[i] = rand()%COLS +3;
-                y[i] = rand()%LINES +3;
-            }
-        }
+        // if(config->iter_counter%20 == 0) {
+        //     for(int i = 0; i < 200; i++) {
+        //         x[i] = rand()%COLS +3;
+        //         y[i] = rand()%LINES +3;
+        //     }
+        // }
+        // for(int i = 0; i < 200; i++) {
+        //     mvprintw(y[i], x[i], "%c", '*');
+        // }
         
-        for(int i = 0; i < 50; i++) {
-            mvprintw(y[i], x[i], "%c", '*');
-        }
 
         DisplayShip(ship, ship.pos_y, ship.pos_x);
         MoveMonster(monster, config->iter_counter++, direction);
@@ -164,6 +175,7 @@ int main (int argc, char **argv)
                 if(ship.waves_killed%config->BOSS_APPEARANCE == 0){
                     monster = CreateBossInstance(LINES/8, COLS/2, difficulty, ship.waves_killed);
                     config->boss_fight = 1;
+                    config->BOSS_APPEARANCE = rand()%3 + 1;
                 }
                 else{
                     if(config->boss_fight){

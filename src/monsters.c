@@ -1,9 +1,11 @@
 #include "../headers/monsters.h"
 
-Monster* InitMonster(int lives, int which_monster, int waves_killed) {
+Monster* InitMonster(int lives, int which_monster, int waves_killed, Difficulty diff) {
     const char suffix_1[4][20] = {"monster1_1.txt", "monster2_1.txt", "monster3_1.txt", "boss_1.txt"};
     const char suffix_2[4][20] = {"monster1_2.txt", "monster2_2.txt", "monster3_2.txt", "boss_2.txt"};
     
+    which_monster = which_monster%3;
+
     char filename[40] = "Textures/Monsters/";
     strcat(filename, suffix_1[which_monster]);
 
@@ -71,6 +73,14 @@ Monster* InitMonster(int lives, int which_monster, int waves_killed) {
     monster->next = NULL;
     monster->print_cpt = 20;
     
+    if(diff == DIFFICILE) {
+        monster->print_cpt -= waves_killed;
+    }
+    
+    if(diff == PROGRESSIVE && waves_killed%2 == 0) {
+        monster->print_cpt -= waves_killed;
+    }
+
     monster->score_gain = lives*10;
     monster->type_of_monster = which_monster+1;
 
@@ -86,20 +96,21 @@ void InsertMonster(Monster* monster,
                    int start_x, 
                    int index, 
                    int lives, 
-                   int waves_killed) {
+                   int waves_killed,
+                   Difficulty diff) {
 
     if(monster == NULL)
         return;
     
     if(monster->next == NULL){
-        Monster* newMonster = InitMonster(lives, index, waves_killed);
+        Monster* newMonster = InitMonster(lives, index, waves_killed, diff);
         newMonster->pos_y = start_y;
         newMonster->pos_x = start_x;
         monster->next = newMonster;
         return;
     }
     if(monster->next)
-        InsertMonster(monster->next, start_y, start_x, index, lives, waves_killed);
+        InsertMonster(monster->next, start_y, start_x, index, lives, waves_killed, diff);
     
 }
 
@@ -109,13 +120,13 @@ Monster* CreateMonsterSet(int start_y, int start_x,
                           int waves_killed) {
     int lives = 1;
     if(diff == DIFFICILE) {
-        lives = 3;
+        lives = MONSTER_ROWS;
     }
     if(diff == PROGRESSIVE) {
-        lives = waves_killed*2;
+        lives = 1 + waves_killed;
     }
 
-    Monster* root = InitMonster(lives, index, waves_killed);
+    Monster* root = InitMonster(lives, index, waves_killed, diff);
     root->pos_y = start_y;
     root->pos_x = start_x;
     int spacer_y = 0;
@@ -127,7 +138,7 @@ Monster* CreateMonsterSet(int start_y, int start_x,
                 break;
             spacer_x += 10;
             InsertMonster(root, (root->pos_y + spacer_y),
-                                (root->pos_x + spacer_x), index, lives, waves_killed);
+                                (root->pos_x + spacer_x), index, lives, waves_killed, diff);
         }
         index++;
 
@@ -300,7 +311,7 @@ Monster* CreateBossInstance(int start_y,
         lives = waves_killed*2;
     }
 
-    Monster* root = InitMonster(lives, 3, waves_killed);
+    Monster* root = InitMonster(lives, 3, waves_killed, diff);
     root->pos_y = start_y;
     root->pos_x = start_x;
 

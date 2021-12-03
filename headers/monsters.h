@@ -4,7 +4,7 @@
 #include "pre_compiler.h"
 
 #define MONSTERS_PER_ROW 8
-#define MONSTER_ROWS 3
+#define MONSTER_ROWS 4
 #define MONSTER_LASER_BUFFER 1
 
 /**
@@ -57,7 +57,7 @@ typedef enum Difficulty Difficulty;
  * 
  * @return Monster* Initialized monster
  */
-Monster* InitMonster(int lives, int which_monster, int waves_killed);
+Monster* InitMonster(int lives, int which_monster, int waves_killed, Difficulty diff);
 
 /**
  * @brief Insert a monster inside the linked link "monster".
@@ -67,7 +67,7 @@ Monster* InitMonster(int lives, int which_monster, int waves_killed);
  * @param start_y Y starting coordinate
  * @param start_x X starting coordinate
  */
-void InsertMonster(Monster* monster, int start_y, int start_x, int index, int lives, int waves_killed);
+void InsertMonster(Monster* monster, int start_y, int start_x, int index, int lives, int waves_killed, Difficulty diff);
 
 /**
  * @brief Create a Set of monsters with a given number
