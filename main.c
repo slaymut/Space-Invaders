@@ -24,7 +24,7 @@ int main (int argc, char **argv)
 
 
 /* Music */
-nt main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     SDL_Surface *ecran = NULL, *pochette = NULL;
     SDL_Event event;
@@ -42,7 +42,7 @@ nt main(int argc, char *argv[])
     /* On ouvre la musique */
     resultat = FMOD_System_CreateSound(system, "laser.wav", FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, 0, &musique);
 
-    /* On vérifie si elle a bien été ouverte (IMPORTANT) */
+  
     if (resultat != FMOD_OK)
     {
         fprintf(stderr, "Impossible de lire le fichier wav\n");
@@ -98,7 +98,7 @@ nt main(int argc, char *argv[])
     SDL_FreeSurface(pochette);
     SDL_Quit();
 
-    return EXIT_SUCCESS;
+    
 }
 
 /* Menu principal  */
