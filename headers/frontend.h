@@ -1,6 +1,4 @@
-#include <unistd.h>
-#include <ncurses.h>
-#include <menu.h>
+#include "pre_compiler.h"
 
 #include "monsters.h"
 #include "fieldOfPlay.h"
@@ -21,3 +19,7 @@ int playGame(void);
 void howToPlay(void);
 
 void exitGame(void);
+
+
+/* Fonction extraite de la page ncurses */
+void printInMiddle(WINDOW *win, int start_y, int start_x, int width, char *string);
