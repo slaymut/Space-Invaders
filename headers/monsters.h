@@ -31,6 +31,7 @@ typedef struct Monster Monster;
 struct PositionHolder {
     int positions_X[MONSTERS_PER_ROW];
     int positions_Y[MONSTERS_PER_ROW];
+    int monsters_alive[MONSTERS_PER_ROW];
 };
 typedef struct PositionHolder PositionHolder;
 

@@ -241,6 +241,13 @@ int MaxY(Monster* monster) {
     return rowmax;
 }
 
+void changePrintCPT(Monster* root) {
+    if(root == NULL)
+        return;
+
+    root->print_cpt;
+}
+
 int isGettingHit(Monster* root, int laser_y, int laser_x) {
     if(root == NULL)
         return 0;
@@ -275,6 +282,7 @@ PositionHolder* ShootingMonsters(Monster* monsters) {
     for(int i = 0; i < MONSTERS_PER_ROW; i++) {
         pos_holder->positions_X[i] = 0;
         pos_holder->positions_Y[i] = 0;
+        pos_holder->monsters_alive[i] = 0;
     }
 
     Monster* temp = monsters;
@@ -284,6 +292,7 @@ PositionHolder* ShootingMonsters(Monster* monsters) {
         if(temp->lives){
             pos_holder->positions_X[row%MONSTERS_PER_ROW] = temp->pos_x;
             pos_holder->positions_Y[row%MONSTERS_PER_ROW] = temp->pos_y;
+            pos_holder->monsters_alive[row%MONSTERS_PER_ROW] = 1;
         }
         temp = temp->next;
     }

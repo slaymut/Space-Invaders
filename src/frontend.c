@@ -86,7 +86,7 @@ int playGame(Difficulty difficulty){
             config->shooting_monster = rand()%(MONSTERS_PER_ROW);
             
             pos_holder = ShootingMonsters(monster);
-            while(pos_holder->positions_X[config->shooting_monster] == -1) {
+            while(pos_holder->monsters_alive[config->shooting_monster] == 0) {
                 config->shooting_monster = rand()%(MONSTERS_PER_ROW);
             }
 
