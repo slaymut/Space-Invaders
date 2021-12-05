@@ -17,7 +17,7 @@ All you have to do to launch the game is first to compile, then launch the execu
 
 ### Compile 
 ```bash
-make
+make clean && make
 ```
 
 ### Run
@@ -45,4 +45,4 @@ Still tho, difficulty augmentation is a thing and you can still win. You will se
 
 NOTE: MONSTER ACCELERATION WHEN KILLING MONSTERS IS NOT A THING IN PROGRESSIVE MODE. THE GAME WOULD BE TOO HARD.
 
-SECOND NOTE: I RECOMMEND "make clean" before making if doing "make", so everything is fresh and clean.
+SECOND NOTE: I RECOMMEND "make clean" before doing "make", so everything is fresh and clean.
