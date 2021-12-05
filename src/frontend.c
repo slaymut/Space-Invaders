@@ -180,7 +180,7 @@ int playGame(Difficulty difficulty){
                 return 0;
         }
 
-        if(ship.laser_y == 0) {
+        if(ship.laser_y == 3) {
             player_shoot = 0;
         }
         int temp_score = 0;
