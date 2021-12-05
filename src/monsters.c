@@ -4,7 +4,12 @@ Monster* InitMonster(int lives, int which_monster, int waves_killed, Difficulty 
     const char suffix_1[4][20] = {"monster1_1.txt", "monster2_1.txt", "monster3_1.txt", "boss_1.txt"};
     const char suffix_2[4][20] = {"monster1_2.txt", "monster2_2.txt", "monster3_2.txt", "boss_2.txt"};
     
-    which_monster = which_monster%3;
+    if(which_monster == -1){
+        which_monster = 3;
+    }
+    else {
+        which_monster = which_monster%3;
+    }
 
     char filename[40] = "Textures/Monsters/";
     strcat(filename, suffix_1[which_monster]);
@@ -326,7 +331,7 @@ Monster* CreateBossInstance(int start_y,
         lives = waves_killed*2;
     }
 
-    Monster* root = InitMonster(lives, 3, waves_killed, diff);
+    Monster* root = InitMonster(lives, -1, waves_killed, diff);
     root->pos_y = start_y;
     root->pos_x = start_x;
 
