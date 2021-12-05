@@ -33,6 +33,7 @@ Spaceship InitSpaceship(char* filepath){
     ship.waves_killed = 0;
     ship.laser_x = 0;
     ship.laser_y = 0;
+    ship.grace_period = 60;
 
     fclose(file);
     

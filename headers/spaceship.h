@@ -16,6 +16,7 @@ struct Spaceship{
     int pos_x, pos_y;
     int waves_killed;
     int laser_x, laser_y;
+    int grace_period;
 };
 typedef struct Spaceship Spaceship;
 

@@ -71,7 +71,7 @@ Monster* InitMonster(int lives, int which_monster, int waves_killed, Difficulty 
 
     monster->lives = lives;
     monster->next = NULL;
-    monster->print_cpt = 20;
+    monster->print_cpt = 15;
     
     if(diff == DIFFICILE) {
         monster->print_cpt -= waves_killed;
@@ -245,7 +245,8 @@ void changePrintCPT(Monster* root) {
     if(root == NULL)
         return;
 
-    root->print_cpt;
+    root->print_cpt -= 2;
+    changePrintCPT(root->next);
 }
 
 int isGettingHit(Monster* root, int laser_y, int laser_x) {

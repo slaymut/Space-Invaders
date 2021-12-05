@@ -54,12 +54,34 @@ int playGame(Difficulty difficulty){
     Direction direction = RIGHT;
 
     PositionHolder* pos_holder = ShootingMonsters(monster);
+    int dead_rows = 0;
     
     int player_shoot = 0;
     int monster_laser_x = 0, monster_laser_y = 0;
 
     
     while(1) {
+        if(ship.grace_period > 0){
+            ship.grace_period--;
+        }
+
+        attron(A_ALTCHARSET);
+        for(int i = 0; i < COLS; i++) {
+            mvprintw(1, i, "%c", ACS_HLINE);
+            mvprintw(3, i, "%c", ACS_HLINE);
+        }
+        
+        mvprintw(1, 0, "%c", ACS_ULCORNER);
+        mvprintw(1, COLS - 1, "%c", ACS_URCORNER);
+        mvprintw(3, 0, "%c", ACS_LLCORNER);
+        mvprintw(3, COLS - 1, "%c", ACS_LRCORNER);
+
+        mvprintw(2, 0, "%c", ACS_VLINE);
+        mvprintw(2, COLS - 1, "%c", ACS_VLINE);
+
+        
+        attroff(A_ALTCHARSET);
+        
         if(config->loop_times == 0) {
             clear();            
             WinScreen();
@@ -67,8 +89,10 @@ int playGame(Difficulty difficulty){
 
             return 0;
         }
-
+        if(ship.grace_period)
+            attron(A_BLINK);
         DisplayShip(ship, ship.pos_y, ship.pos_x);
+        attroff(A_BLINK);
         MoveMonster(monster, config->iter_counter++, direction);
         
         if(config->iter_counter%monster->print_cpt == 0) {
@@ -77,10 +101,13 @@ int playGame(Difficulty difficulty){
 
         DisplayMonsters(monster, config->model%2);
 
-        mvprintw(1, 1, "LIVES: %s %s %s", config->lives[0], config->lives[1], config->lives[2]);
-        mvprintw(1, COLS - 20, "SCORE: %d", config->score);
+        attron(A_BOLD);
+        mvprintw(2, 1, "LIVES: %s %s %s", config->lives[0], config->lives[1], config->lives[2]);
+        attron(A_UNDERLINE);
+        mvprintw(2, COLS - 20, "SCORE: %d", config->score);
+        mvprintw(2, 20, "DIFFICULTY: %s", diff);
+        attroff(A_UNDERLINE);
         
-        mvprintw(1, 20, "DIFFICULTY: %s", diff);
 
         if(config->monster_shoot == 0) {
             config->monster_shoot = 1;
@@ -100,9 +127,10 @@ int playGame(Difficulty difficulty){
                      monster_laser_x, "🔥");
         }
 
-        if(isShipGetHit(monster_laser_y, monster_laser_x, ship)){
+        if(isShipGetHit(monster_laser_y, monster_laser_x, ship) && ship.grace_period == 0){
             ship.lives--;
             config->lives[ship.lives] = " ";
+            ship.grace_period = 60;
             if(ship.lives == 0){
                 refresh();
                 clear();
@@ -151,12 +179,22 @@ int playGame(Difficulty difficulty){
                 endwin();
                 return 0;
         }
-        
+
         if(ship.laser_y == 0) {
             player_shoot = 0;
         }
         int temp_score = 0;
         if((temp_score = isGettingHit(monster, ship.laser_y, ship.laser_x)) && player_shoot == 1){
+            int temp_dead_rows = 0;
+            for(int i = 0; i < MONSTERS_PER_ROW-1; i++) {
+                if(pos_holder->monsters_alive[i] == 0){
+                    temp_dead_rows++;
+                }
+            }
+            if(temp_dead_rows > dead_rows && difficulty != PROGRESSIVE) {
+                changePrintCPT(monster);
+                dead_rows = temp_dead_rows;
+            }
             if(isEveryMonsterDead(monster, 0)) {
                 ship.waves_killed++;
                 if(ship.waves_killed%config->BOSS_APPEARANCE == 0){
@@ -170,6 +208,7 @@ int playGame(Difficulty difficulty){
                         config->loop_times--;
                     }
                     monster = CreateMonsterSet(LINES/8, COLS/4, 0, difficulty, ship.waves_killed);
+                    dead_rows = 0;
                 }
             }
             if(temp_score > 1) {
@@ -266,6 +305,10 @@ void print_menu(WINDOW *menu_win, int highlight)
 	}
 	wrefresh(menu_win);
 }
+
+
+
+
 
 /* Menu principal  */
 // char m_choices[4][20] = {

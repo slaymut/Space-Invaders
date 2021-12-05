@@ -189,4 +189,6 @@ Monster* CreateBossInstance(int start_y, int start_x,
                           Difficulty diff,
                           int waves_killed);
 
+void changePrintCPT(Monster *monster);
+
 #endif
