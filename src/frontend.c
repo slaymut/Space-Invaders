@@ -3,7 +3,8 @@
 char *choices[] = { 
 			"EASY",
 			"HARD",
-			"PROGRESSIVE"
+			"PROGRESSIVE",
+            "NONE ? (EXIT)"
 		  };
 
 int n_choices = sizeof(choices) / sizeof(char *);
@@ -146,7 +147,11 @@ int playGame(Difficulty difficulty){
                     player_shoot = 1;
                 }
                 break;
+            case 27:
+                endwin();
+                return 0;
         }
+        
         if(ship.laser_y == 0) {
             player_shoot = 0;
         }
@@ -203,10 +208,11 @@ int MainMenu() {
 	int highlight = 1;
 	int choice = 0;
 	int c;
-		
-	menu_win = newwin(20, 40, LINES/2 - 10, COLS/2 - 20);
+
+	open_screens_files("mainscreen.txt", LINES/8, COLS/2 - 29);
+	menu_win = newwin(10, 30, LINES - LINES/3, COLS/2 - 15);
 	keypad(menu_win, TRUE);
-	mvprintw(0, 0, "Use arrow keys to go up and down, Press enter to select a choice");
+	
 	refresh();
 	print_menu(menu_win, highlight);
 	while(1)
@@ -227,17 +233,11 @@ int MainMenu() {
 			case 10:
 				choice = highlight;
 				break;
-			default:
-				mvprintw(24, 0, "Charcter pressed is = %3d Hopefully it can be printed as '%c'", c, c);
-				refresh();
-				break;
 		}
 		print_menu(menu_win, highlight);
 		if(choice != 0)	/* User did a choice come out of the infinite loop */
 			break;
-	}	
-	mvprintw(23, 0, "You chose choice %d with choice string %s\n", choice, choices[choice - 1]);
-	refresh();
+	}
 
     werase(menu_win);
     return highlight;
@@ -251,14 +251,18 @@ void print_menu(WINDOW *menu_win, int highlight)
 	y = 2;
 	box(menu_win, 0, 0);
 	for(i = 0; i < n_choices; ++i)
-	{	if(highlight == i + 1) 
-		{	wattron(menu_win, A_REVERSE); 
+	{	
+        if(highlight == i + 1) 
+		{	
+            wattron(menu_win, A_REVERSE);
+            wattron(menu_win, A_BLINK); 
 			mvwprintw(menu_win, y, x, "%s", choices[i]);
+            wattroff(menu_win, A_BLINK);
 			wattroff(menu_win, A_REVERSE);
 		}
 		else
 			mvwprintw(menu_win, y, x, "%s", choices[i]);
-		++y;
+		y += 2;
 	}
 	wrefresh(menu_win);
 }

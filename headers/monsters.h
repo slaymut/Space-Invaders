@@ -3,7 +3,7 @@
 
 #include "pre_compiler.h"
 
-#define MONSTERS_PER_ROW 5
+#define MONSTERS_PER_ROW 8
 #define MONSTER_ROWS 4
 #define MONSTER_LASER_BUFFER 1
 

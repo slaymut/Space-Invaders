@@ -3,6 +3,7 @@
 #include "monsters.h"
 #include "fieldOfPlay.h"
 #include "spaceship.h"
+#include "utils.h"
 
 
 /* Menu functions */

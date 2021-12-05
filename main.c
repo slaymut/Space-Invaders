@@ -1,4 +1,3 @@
-#include "headers/utils.h"
 #include "headers/frontend.h"
 
 int main(int argc, char** argv) {
@@ -19,6 +18,11 @@ int main(int argc, char** argv) {
     StartScreen();
 
     int input = MainMenu();
+    if(input == 4){
+        endwin();
+        return 0;
+    }
+    
     Difficulty difficulty = input - 1;
 
     playGame(difficulty);
