@@ -1,31 +1,27 @@
 #include "headers/spaceship.h"
 #include "headers/monsters.h"
 #include "headers/fieldOfPlay.h"
+#include "headers/utils.h"
 
 int main (int argc, char **argv)
-{ 
+{
     setlocale(LC_ALL, "");
 
     initscr(); raw(); noecho(); cbreak(); curs_set(0);
     //start_color();
-
-    init_pair(3, COLOR_BLUE, COLOR_BLACK);
-    init_pair(2, COLOR_RED, COLOR_BLACK);
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);
-
+    // init_pair(3, COLOR_BLUE, COLOR_BLACK);
+    // init_pair(2, COLOR_RED, COLOR_BLACK);
+    // init_pair(1, COLOR_GREEN, COLOR_BLACK);
     // init_pair(4, COLOR_WHITE, COLOR_BLACK);
     // wbkgd(stdscr, COLOR_PAIR(4));
-    
+
+    StartScreen();
 
 
     time_t t;
     srand(time(&t));
     Difficulty difficulty = DIFFICILE;
-    GameConfig* config = malloc(sizeof(GameConfig));
-    config->iter_counter = 1;
-    config->lives[0] = "🧡";
-    config->lives[1] = "💛";
-    config->lives[2] = "💚";
+    GameConfig* config = initconfig();
 
     switch (difficulty) {
         case FACILE:
@@ -53,7 +49,7 @@ int main (int argc, char **argv)
     
     int player_shoot = 0;
     int monster_laser_x = 0, monster_laser_y = 0;
-    
+
     
     while(1) {
         if(config->loop_times == 0) {
@@ -100,7 +96,7 @@ int main (int argc, char **argv)
         DisplayMonsters(monster, config->model%2);
 
         mvprintw(1, 1, "LIVES: %s %s %s", config->lives[0], config->lives[1], config->lives[2]);
-        mvprintw(1, COLS - 10, "SCORE: %d", config->score);
+        mvprintw(1, COLS - 20, "SCORE: %d", config->score);
 
         if(config->monster_shoot == 0) {
             config->monster_shoot = 1;
@@ -120,6 +116,8 @@ int main (int argc, char **argv)
             ship.lives--;
             config->lives[ship.lives] = " ";
             if(ship.lives == 0){
+
+                refresh();
                 clear();
                 mvprintw(LINES/2, COLS/2, "YOU LOST. DO BETTER NEXT TIME !");
 

@@ -20,4 +20,6 @@ struct GameConfig {
 };
 typedef struct GameConfig GameConfig;
 
+GameConfig* initconfig();
+
 #endif

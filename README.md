@@ -12,6 +12,7 @@ sudo apt-get install libncurses5-dev libncursesw5-dev
 ```bash
 sudo apt-get install sox
 sudo apt-get install libsox-fmt-mp3
+sudo apt-get install libcurl4-openssl-dev libsox-dev
 ```
 
 
