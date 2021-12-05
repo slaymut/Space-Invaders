@@ -53,23 +53,8 @@ int main (int argc, char **argv)
     
     while(1) {
         if(config->loop_times == 0) {
-            clear();
-
-            int x[200];
-            int y[200];
-            for(int i = 0; i < 200; i++) {
-                x[i] = rand()%COLS +3;
-                y[i] = rand()%LINES +3;
-            }
-            for(int i = 0; i < 200; i++) {
-                mvprintw(y[i], x[i], "%c", '*');
-            }
-
-            mvprintw(LINES/2, COLS/2, "YOU WIN! BRAVOOOOO!");
-            
-            
-            
-            getch();
+            clear();            
+            WinScreen();
             endwin();
 
             return 0;
@@ -119,9 +104,7 @@ int main (int argc, char **argv)
 
                 refresh();
                 clear();
-                mvprintw(LINES/2, COLS/2, "YOU LOST. DO BETTER NEXT TIME !");
-
-                getch();
+                GameOverScreen();
                 endwin();
 
                 return 0;

@@ -64,3 +64,29 @@ void StartScreen() {
 
     getch();
 }
+
+void WinScreen() {
+    open_screens_files("winner.txt", LINES/3 - 4, COLS/2 - 28);
+    attron(A_BLINK);
+    attron(A_BOLD);
+    attron(A_STANDOUT);
+    mvprintw(LINES - LINES/3, COLS/2 - 13,  " THANK YOU FOR PLAYING ! ");
+    attroff(A_BLINK);
+    attroff(A_BOLD);
+    attroff(A_STANDOUT);
+
+    getch();
+}
+
+void GameOverScreen() {
+    open_screens_files("loser.txt", LINES/3 - 4, COLS/2 - 33);
+    attron(A_BLINK);
+    attron(A_BOLD);
+    attron(A_STANDOUT);
+    mvprintw(LINES/2, COLS/2 - 12,  " GOOD LUCK NEXT TIME ! ");
+    attroff(A_BLINK);
+    attroff(A_BOLD);
+    attroff(A_STANDOUT);
+
+    getch();
+}

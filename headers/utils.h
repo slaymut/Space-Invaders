@@ -22,4 +22,8 @@ void open_screens_files(char* filename, int start_y, int start_x);
 
 void StartScreen();
 
+void WinScreen();
+
+void GameOverScreen();
+
 #endif
