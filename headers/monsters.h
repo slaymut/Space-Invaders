@@ -3,7 +3,7 @@
 
 #include "pre_compiler.h"
 
-#define MONSTERS_PER_ROW 8
+#define MONSTERS_PER_ROW 5
 #define MONSTER_ROWS 4
 #define MONSTER_LASER_BUFFER 1
 
@@ -165,7 +165,7 @@ int isEveryMonsterDead(Monster* root, int check);
  * 
  * @return Positions
  */
-PositionHolder ShootingMonsters(Monster* monsters);
+PositionHolder* ShootingMonsters(Monster* monsters);
 
 /**
  * @brief 

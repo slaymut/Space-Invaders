@@ -47,6 +47,14 @@ void open_screens_files(char* filename, int start_y, int start_x) {
         mvprintw(start_y + height, start_x + width, "%c", ch);
     }
 
+    for(int i = 0; i < LINES; i += rand()%2 + 2) {
+        for(int j = rand()%5; j < COLS; j += rand()%10 + 10) {
+            if(!(i < start_y + height +1 && i > start_y - 1 && j < start_x + width + 1 && j > start_x - 1)){
+                mvprintw(i, j, "%c", '.');
+            }
+        }
+    }
+
     attroff(A_BOLD);
 
     fclose(file);

@@ -1,13 +1,15 @@
-#include "headers/spaceship.h"
-#include "headers/monsters.h"
-#include "headers/fieldOfPlay.h"
 #include "headers/utils.h"
+#include "headers/frontend.h"
 
+/*
 int main (int argc, char **argv)
 {
     setlocale(LC_ALL, "");
 
     initscr(); raw(); noecho(); cbreak(); curs_set(0);
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
+
     //start_color();
     // init_pair(3, COLOR_BLUE, COLOR_BLACK);
     // init_pair(2, COLOR_RED, COLOR_BLACK);
@@ -101,7 +103,6 @@ int main (int argc, char **argv)
             ship.lives--;
             config->lives[ship.lives] = " ";
             if(ship.lives == 0){
-
                 refresh();
                 clear();
                 GameOverScreen();
@@ -189,5 +190,31 @@ int main (int argc, char **argv)
     getch();
     endwin();
     
+    return 0;
+}
+*/
+
+int main(int argc, char** argv) {
+    setlocale(LC_ALL, "");
+
+    initscr(); raw(); noecho(); cbreak(); curs_set(0);
+    
+    //start_color();
+    // init_pair(3, COLOR_BLUE, COLOR_BLACK);
+    // init_pair(2, COLOR_RED, COLOR_BLACK);
+    // init_pair(1, COLOR_GREEN, COLOR_BLACK);
+    // init_pair(4, COLOR_WHITE, COLOR_BLACK);
+    // wbkgd(stdscr, COLOR_PAIR(4));
+    
+    time_t t;
+    srand(time(&t));
+    
+    StartScreen();
+
+    int input = MainMenu();
+    Difficulty difficulty = input - 1;
+
+    playGame(difficulty);
+
     return 0;
 }

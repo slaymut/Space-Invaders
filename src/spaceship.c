@@ -23,9 +23,10 @@ Spaceship InitSpaceship(char* filepath){
 
     Spaceship ship;
 
-    ship.model = (char**) malloc(row*sizeof(char *));
+    ship.model = (char**) calloc(row, sizeof(char *));
     for(int i = 0; i < row; i++)
-        ship.model[i] = (char *) malloc(col*sizeof(char));
+        ship.model[i] = (char *) calloc(col, sizeof(char));
+    
     ship.height = row;
     ship.width = col;
     ship.lives = 3;

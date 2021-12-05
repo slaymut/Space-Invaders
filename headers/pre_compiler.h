@@ -12,5 +12,6 @@
 #include <sys/ioctl.h>
 #include <ncurses.h>
 #include <locale.h>
+#include <menu.h>
 
 #endif

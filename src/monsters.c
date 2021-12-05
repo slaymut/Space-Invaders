@@ -269,16 +269,21 @@ int isEveryMonsterDead(Monster* root, int check) {
 }
 
 
-PositionHolder ShootingMonsters(Monster* monsters) {
-    PositionHolder pos_holder;
+PositionHolder* ShootingMonsters(Monster* monsters) {
+    PositionHolder* pos_holder = malloc(sizeof(PositionHolder));
+
+    for(int i = 0; i < MONSTERS_PER_ROW; i++) {
+        pos_holder->positions_X[i] = 0;
+        pos_holder->positions_Y[i] = 0;
+    }
 
     Monster* temp = monsters;
     int row = 0;
     while(temp != NULL) {
         row++;
         if(temp->lives){
-            pos_holder.positions_X[row%MONSTERS_PER_ROW] = temp->pos_x;
-            pos_holder.positions_Y[row%MONSTERS_PER_ROW] = temp->pos_y;
+            pos_holder->positions_X[row%MONSTERS_PER_ROW] = temp->pos_x;
+            pos_holder->positions_Y[row%MONSTERS_PER_ROW] = temp->pos_y;
         }
         temp = temp->next;
     }
